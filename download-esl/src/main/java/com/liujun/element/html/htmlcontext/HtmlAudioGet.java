@@ -7,6 +7,9 @@ import com.liujun.common.utils.HtmlHrefUtils;
 import com.liujun.element.html.bean.HtmlData;
 import com.liujun.element.html.constant.AnalyzeEnum;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 网页中的标题获取
  *
@@ -54,37 +57,68 @@ public class HtmlAudioGet implements FlowServiceInf {
     // 打开当前网页的链接
     String currHtmlHref = context.getObject(AnalyzeEnum.ANALYZE_INPUT_CURR_HTML_HREF.getKey());
 
-    // 开始的位置
-    int titleStartIndex = AUDIO_BMP_START.matcherIndexIgnoreCase(htmlArray, 0);
+    List<String> audioHrefList = this.getAudioHref(htmlArray, currHtmlHref);
 
-    if (titleStartIndex != -1) {
+    // 设置当前音频的网页链接地址
+    HtmlData data = context.getObject(AnalyzeEnum.ANALYZE_OUTPUT_DATA_BEAN.getKey());
 
-      int endIndex = AUDIO_BMP_END.matcherIndexIgnoreCase(htmlArray, titleStartIndex);
+    // 获取音频地址
+    if (data.getAudioHref() == null) {
+      data.setAudioHref(audioHrefList);
+    } else {
+      data.getAudioHref().addAll(audioHrefList);
+    }
 
-      int audioLength = endIndex - titleStartIndex;
-      char[] audioDataArrays = new char[audioLength];
-      System.arraycopy(htmlArray, titleStartIndex, audioDataArrays, 0, audioLength);
+    return true;
+  }
 
-      String hrefDataUrl = null;
+  /**
+   * 获取网页中的所有音频地址
+   *
+   * @param htmlArray 网页
+   * @param currHtmlHref 当前网页链接
+   * @return
+   */
+  private List<String> getAudioHref(char[] htmlArray, String currHtmlHref) {
+    List<String> audioList = new ArrayList<>();
 
-      int startIndex = AUDIO_SRC_BMP_START.matcherIndexIgnoreCase(audioDataArrays, 0);
-      if (startIndex != -1) {
-        int srcEndIndex =
-            AUDIO_SRC_BMP_END.matcherIndexIgnoreCase(
-                audioDataArrays, startIndex + SRC_START.length());
-        startIndex += SRC_START.length();
-        int hrefDataLength = srcEndIndex - startIndex;
-        char[] srcHref = new char[hrefDataLength];
-        System.arraycopy(audioDataArrays, startIndex, srcHref, 0, hrefDataLength);
-        hrefDataUrl = new String(srcHref);
+    int positionIndex = 0;
 
-        String audioHref = HtmlHrefUtils.hrefFull(hrefDataUrl, currHtmlHref);
+    while (positionIndex < htmlArray.length) {
+      // 开始的位置
+      int titleStartIndex = AUDIO_BMP_START.matcherIndexIgnoreCase(htmlArray, positionIndex);
+      if (titleStartIndex != -1) {
+        int endIndex = AUDIO_BMP_END.matcherIndexIgnoreCase(htmlArray, titleStartIndex);
 
-        // 设置当前音频的网页链接地址
-        HtmlData data = context.getObject(AnalyzeEnum.ANALYZE_OUTPUT_DATA_BEAN.getKey());
-        data.setAudioHref(audioHref);
+        int audioLength = endIndex - titleStartIndex;
+        char[] audioDataArrays = new char[audioLength];
+        System.arraycopy(htmlArray, titleStartIndex, audioDataArrays, 0, audioLength);
+
+        String hrefDataUrl = null;
+
+        int startIndex = AUDIO_SRC_BMP_START.matcherIndexIgnoreCase(audioDataArrays, 0);
+        if (startIndex != -1) {
+          int srcEndIndex =
+              AUDIO_SRC_BMP_END.matcherIndexIgnoreCase(
+                  audioDataArrays, startIndex + SRC_START.length());
+          startIndex += SRC_START.length();
+          int hrefDataLength = srcEndIndex - startIndex;
+          char[] srcHref = new char[hrefDataLength];
+          System.arraycopy(audioDataArrays, startIndex, srcHref, 0, hrefDataLength);
+          hrefDataUrl = new String(srcHref);
+
+          String audioHref = HtmlHrefUtils.hrefFull(hrefDataUrl, currHtmlHref);
+          audioList.add(audioHref);
+          // 设置开始位置为上次结束的位置
+          positionIndex = endIndex;
+        }
+      }
+      // 当开始符号没有找到，说明结束了
+      else {
+        break;
       }
     }
-    return true;
+
+    return audioList;
   }
 }

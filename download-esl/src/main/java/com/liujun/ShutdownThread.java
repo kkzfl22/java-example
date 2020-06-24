@@ -4,6 +4,8 @@ import com.liujun.algorithm.bloomfilter.HtmlContextFilter;
 import com.liujun.algorithm.bloomfilter.HtmlUrlFilter;
 import com.liujun.download.esl.HtmlAnalyzeFLow;
 import com.liujun.download.hrefqueue.HtmlHrefQueueManager;
+import com.liujun.element.errorfile.HrefErrorProcess;
+import com.liujun.element.errorfile.ScheduleTaskSave;
 
 /**
  * @author liujun
@@ -37,6 +39,9 @@ public class ShutdownThread extends Thread {
       }
       System.out.println("shutdown main wait main ");
     }
+    // 定时保存退出
+    ScheduleTaskSave.shutdown();
+    HrefErrorProcess.INSTANCE.close();
   }
 
   /** 进行下载队列的保存 */

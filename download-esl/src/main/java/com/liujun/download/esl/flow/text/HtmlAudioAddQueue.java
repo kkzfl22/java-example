@@ -10,6 +10,9 @@ import com.liujun.element.html.bean.HtmlData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 网页音视频信息加入队列
  *
@@ -38,25 +41,44 @@ public class HtmlAudioAddQueue implements FlowServiceInf {
 
       HrefData currHtmlUrlData = context.getObject(FlowKeyEnum.FLOW_DOWNLOAD_ADDRESS.getKey());
 
-      HrefData audioData = new HrefData();
-      audioData.setRelativePath(currHtmlUrlData.getRelativePath());
-      audioData.setHrefText(htmlData.getTitle());
-      audioData.setHrefUrl(htmlData.getAudioHref());
+      List<String> audioHrefUrl = htmlData.getAudioHref();
+      List<HrefData> putDataList = new ArrayList<>();
 
-      String suffixName = FileUtils.getFileSuffixName(htmlData.getAudioHref());
-
-      if (null != suffixName) {
-        audioData.setFileName(currHtmlUrlData.getFileName() + SUFFIX_NAME + suffixName);
-      } else {
-        audioData.setFileName(currHtmlUrlData.getFileName() + SUFFIX_NAME + DEFAULT_SUFFIX_NAME);
+      for (String audioHref : audioHrefUrl) {
+        putDataList.add(this.getAudioHref(currHtmlUrlData, htmlData, audioHref));
       }
 
       // 将数据加载下载队列
-      HtmlHrefQueueManager.INSTANCE.getHrefQueue().putHref(audioData);
+      HtmlHrefQueueManager.INSTANCE.getHrefQueue().putHref(putDataList);
 
       logger.info("collect html audio queue add queue finish");
     }
 
     return true;
+  }
+
+  /**
+   * 将音频下载地址转换
+   *
+   * @param currHtmlUrlData
+   * @param htmlData
+   * @param audioHref
+   * @return
+   */
+  private HrefData getAudioHref(HrefData currHtmlUrlData, HtmlData htmlData, String audioHref) {
+    HrefData audioData = new HrefData();
+    audioData.setRelativePath(currHtmlUrlData.getRelativePath());
+    audioData.setHrefText(htmlData.getTitle());
+    audioData.setHrefUrl(audioHref);
+
+    String suffixName = FileUtils.getFileSuffixName(audioHref);
+
+    if (null != suffixName) {
+      audioData.setFileName(currHtmlUrlData.getFileName() + SUFFIX_NAME + suffixName);
+    } else {
+      audioData.setFileName(currHtmlUrlData.getFileName() + SUFFIX_NAME + DEFAULT_SUFFIX_NAME);
+    }
+
+    return audioData;
   }
 }

@@ -21,6 +21,10 @@ public enum TestFileName {
   HE_TAKE_TEST("esl_english_hetakesTest.html"),
 
   EXERCISINGT("esl_english_exercisingt.html"),
+
+  MOST_POPULAR_50("50MostPopularAmericanLastNames.html"),
+
+  MOST_POPULAR_100("100MostPopularAmericanLastNames.html"),
   ;
 
   /** 文件名 */

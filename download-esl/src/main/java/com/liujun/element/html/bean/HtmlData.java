@@ -2,6 +2,8 @@ package com.liujun.element.html.bean;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 网页信息
  *
@@ -17,8 +19,8 @@ public class HtmlData {
   /** 网页内容信息 */
   private String context;
 
-  /** 音频地址 */
-  private String audioHref;
+  /** 提取网页中的音频地址 */
+  private List<String> audioHref;
 
   @Override
   public String toString() {

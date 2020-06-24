@@ -48,6 +48,9 @@ public class SymbolMsg {
   /** 空格 */
   public static final String SPACE = " ";
 
-
+  /** 点 */
   public static final String POINT = ".";
+
+  /** 多换换行的标识符 */
+  public static final String PARSE_LINE = "---";
 }

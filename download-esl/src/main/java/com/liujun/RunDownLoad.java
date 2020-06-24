@@ -2,6 +2,8 @@ package com.liujun;
 
 import com.liujun.download.esl.HtmlAnalyzeFLow;
 import com.liujun.download.hrefqueue.HtmlHrefQueueManager;
+import com.liujun.element.errorfile.HrefErrorProcess;
+import com.liujun.element.errorfile.ScheduleTaskSave;
 import com.liujun.element.html.bean.HrefData;
 
 /**
@@ -25,6 +27,13 @@ public class RunDownLoad {
     hrefPut.getRelativePath().add("index");
 
     HtmlHrefQueueManager.INSTANCE.getHrefQueue().putHref(hrefPut);
+
+    // 定时保存任务启动
+    HrefErrorProcess.INSTANCE.startRegister();
+
+    // 启动保存队列
+    Thread startThread = new Thread(new ScheduleTaskSave());
+    startThread.start();
 
     HtmlAnalyzeFLow.INSTANCE.downloadHtml();
   }

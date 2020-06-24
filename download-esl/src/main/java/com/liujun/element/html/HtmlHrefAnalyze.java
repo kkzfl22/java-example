@@ -47,6 +47,10 @@ public class HtmlHrefAnalyze {
     FLOW.add(HrefExclude.INSTANCE);
     // 网页链新文本的排除操作
     FLOW.add(HrefTextExclude.INSTANCE);
+    // 网页链接中的文本处理
+    FLOW.add(HrefTextProcess.INSTANCE);
+    // 进行网页链接文本的版本
+    FLOW.add(HrefTextSpecifyClean.INSTANCE);
     // 检查网页链接是否已经下载过
     FLOW.add(HrefBloomFilter.INSTANCE);
     // 将已经处理好的链接添加到集合中

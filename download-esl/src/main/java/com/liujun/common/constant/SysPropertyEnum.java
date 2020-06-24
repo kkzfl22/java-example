@@ -32,6 +32,9 @@ public enum SysPropertyEnum {
 
   /** 存储转码后的文件后缀名 */
   HTML_PROC_SUFFIX_NAME("html.proc.suffix.name"),
+
+  /** 网页下载配制 */
+  HTML_DOWN_RETRY_CFG("file.retry.num"),
   ;
 
   private String key;

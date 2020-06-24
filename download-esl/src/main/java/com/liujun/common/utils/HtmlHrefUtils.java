@@ -29,6 +29,26 @@ public class HtmlHrefUtils {
   }
 
   /**
+   * 获取链接的名称
+   *
+   * @param hrefInfo 链接信息
+   * @return 返回链接中的名称
+   */
+  public static String getHrefFileName(String hrefInfo) {
+    String fileName = SymbolMsg.EMPTY;
+    int hrefIndex;
+    if ((hrefIndex = hrefInfo.lastIndexOf(SymbolMsg.PATH)) != -1) {
+      fileName = hrefInfo.substring(hrefIndex+1);
+      int pointIndex = -1;
+      while ((pointIndex = fileName.indexOf(SymbolMsg.POINT)) != -1) {
+        fileName = fileName.substring(0, pointIndex);
+      }
+    }
+
+    return fileName;
+  }
+
+  /**
    * 进行网页的链接的完整填充
    *
    * @param currHref 当前链接

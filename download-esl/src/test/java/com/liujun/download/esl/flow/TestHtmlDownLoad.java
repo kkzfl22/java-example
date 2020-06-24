@@ -2,6 +2,9 @@ package com.liujun.download.esl.flow;
 
 import com.liujun.common.flow.FlowServiceContext;
 import com.liujun.download.esl.constant.FlowKeyEnum;
+import com.liujun.element.download.bean.HttpDownLoadResponse;
+import com.liujun.element.html.bean.HrefData;
+import org.junit.Assert;
 import org.junit.Test;
 
 import javax.net.ssl.SSLContext;
@@ -17,19 +20,40 @@ public class TestHtmlDownLoad {
   @Test
   public void testDownload() {
     FlowServiceContext context = new FlowServiceContext();
-    context.put(FlowKeyEnum.FLOW_DOWNLOAD_ADDRESS.getKey(), "https://www.rong-chang.com/");
+
+    HrefData hrefUrl = new HrefData();
+
+    hrefUrl.setHrefText("index");
+    hrefUrl.setHrefText("index");
+    hrefUrl.setHrefUrl("https://www.rong-chang.com/");
+    hrefUrl.getRelativePath().add("download");
+
+    context.put(FlowKeyEnum.FLOW_DOWNLOAD_ADDRESS.getKey(), hrefUrl);
 
     HtmlDownLoad.INSTANCE.runFlow(context);
+
+    // 检查下载为错误
+    HttpDownLoadResponse response = context.getObject(FlowKeyEnum.FLOW_DOWNLOAD_DATA_BEAN.getKey());
+    Assert.assertEquals(response.isFlag(), true);
   }
 
   @Test
   public void testDownloadMp3() {
     FlowServiceContext context = new FlowServiceContext();
-    context.put(
-        FlowKeyEnum.FLOW_DOWNLOAD_ADDRESS.getKey(),
-        "https://www.eslfast.com/kidsenglish/audio/ke001c3.mp3");
+
+    HrefData hrefUrl = new HrefData();
+
+    hrefUrl.setHrefText("index");
+    hrefUrl.setHrefText("index");
+    hrefUrl.setHrefUrl("https://www.eslfast.com/kidsenglish/audio/ke001c3.mp3");
+    hrefUrl.getRelativePath().add("download");
+
+    context.put(FlowKeyEnum.FLOW_DOWNLOAD_ADDRESS.getKey(), hrefUrl);
 
     HtmlDownLoad.INSTANCE.runFlow(context);
+    HttpDownLoadResponse response = context.getObject(FlowKeyEnum.FLOW_DOWNLOAD_DATA_BEAN.getKey());
+
+    Assert.assertEquals(response.isFlag(), true);
   }
 
   @Test

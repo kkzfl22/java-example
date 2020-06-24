@@ -73,7 +73,7 @@ public class HtmlTagCleanProcess {
   public String getContext(List<DataTagPosition> tagList, char[] contArray) {
 
     if (null == tagList || tagList.isEmpty()) {
-      return null;
+      return new String(contArray);
     }
 
     StringBuilder outData = new StringBuilder();

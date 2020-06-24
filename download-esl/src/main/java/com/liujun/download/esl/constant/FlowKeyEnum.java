@@ -18,6 +18,9 @@ public enum FlowKeyEnum {
   /** 下载的网页内容信息 */
   FLOW_DOWNLOAD_CONTEXT("flow_download_context"),
 
+  /** 当前下载结果的标识 */
+  FLOW_PROC_DOWNLOAD_RESPONSE_FLAG("flow_proc_download_response_flag"),
+
   /** 下载后的java对象 */
   FLOW_DOWNLOAD_DATA_BEAN("flow_down_data_bean"),
 
@@ -27,13 +30,8 @@ public enum FlowKeyEnum {
   /** 链接集合对象信息 */
   FLOW_CONTEXT_HREF_LIST("flow_context_href_list"),
 
-
-  /**
-   * 网页内容分析后的数据
-   */
+  /** 网页内容分析后的数据 */
   FLOW_CONTEXT_PROCESS_DATA("flow_context_process_data"),
-
-
   ;
 
   private String key;

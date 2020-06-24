@@ -25,6 +25,12 @@ public class TestHtmlHrefContextAnalyze {
     }
   }
 
+  @Test
+  public void runFlowOne() {
+    this.hrefContextFLow(TestFileName.MOST_POPULAR_50.getFileName());
+    this.hrefContextFLow(TestFileName.MOST_POPULAR_100.getFileName());
+  }
+
   private void hrefContextFLow(String fileName) {
 
     HrefData hrefUrl = new HrefData();

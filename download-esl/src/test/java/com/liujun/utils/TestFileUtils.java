@@ -14,6 +14,8 @@ import java.nio.file.Paths;
  */
 public class TestFileUtils {
 
+  private static final String BASE_PATH = "html/";
+
   /**
    * 获取文件内容的方法
    *
@@ -25,7 +27,10 @@ public class TestFileUtils {
     String dataValue = null;
     try {
       URI readPath =
-          TestHtmlHrefContextAnalyze.class.getClassLoader().getResource(filePath).toURI();
+          TestHtmlHrefContextAnalyze.class
+              .getClassLoader()
+              .getResource(BASE_PATH + filePath)
+              .toURI();
 
       byte[] data = new byte[0];
       data = Files.readAllBytes(Paths.get(readPath));

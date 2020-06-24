@@ -4,6 +4,8 @@ import com.liujun.common.flow.FlowServiceContext;
 import com.liujun.common.flow.FlowServiceInf;
 import com.liujun.download.esl.constant.FlowKeyEnum;
 import com.liujun.download.esl.flow.HtmlDownLoad;
+import com.liujun.download.esl.flow.HtmlDownLoadErrorProcess;
+import com.liujun.download.esl.flow.HtmlDownLoadHrefSave;
 import com.liujun.download.esl.flow.HtmlUrlBoomFilter;
 import com.liujun.download.esl.flow.audio.HtmlAudioFileFlow;
 import com.liujun.download.esl.flow.text.HtmlTextFileFlow;
@@ -44,11 +46,15 @@ public class HtmlAnalyzeFLow {
   static {
     // 1，下载网页操作
     FLOW.add(HtmlDownLoad.INSTANCE);
+    // 检查网页下载的结果，如果成功，则继续失败，则记录下失败信息
+    FLOW.add(HtmlDownLoadErrorProcess.INSTANCE);
     // 2，进行网页链接的判重操作
     FLOW.add(HtmlUrlBoomFilter.INSTANCE);
-    // 3,音频文件处理流程，进行音频文件的存储
+    // 3，将当前的链接信息记录到文件
+    FLOW.add(HtmlDownLoadHrefSave.INSTANCE);
+    // 4,音频文件处理流程，进行音频文件的存储
     FLOW.add(HtmlAudioFileFlow.INSTANCE);
-    // 4，网页文本文件流程，进行网页文件的流程处理
+    // 5，网页文本文件流程，进行网页文件的流程处理
     FLOW.add(HtmlTextFileFlow.INSTANCE);
   }
 
@@ -80,7 +86,7 @@ public class HtmlAnalyzeFLow {
       }
     }
 
-    //设置运行状态为false
+    // 设置运行状态为false
     runFlag.set(false);
   }
 

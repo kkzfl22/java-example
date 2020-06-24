@@ -1,17 +1,22 @@
 package com.liujun.download.esl.flow;
 
+import com.liujun.common.config.SysPropertiesUtils;
+import com.liujun.common.constant.SymbolMsg;
+import com.liujun.common.constant.SysPropertyEnum;
 import com.liujun.common.flow.FlowServiceContext;
 import com.liujun.common.flow.FlowServiceInf;
 import com.liujun.download.esl.constant.FlowKeyEnum;
 import com.liujun.element.download.HttpsClientManager;
 import com.liujun.element.download.HttpsHtmlDownloadImpl;
 import com.liujun.element.download.bean.HttpDownLoadData;
+import com.liujun.element.download.bean.HttpDownLoadResponse;
 import com.liujun.element.html.bean.HrefData;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.impl.client.CloseableHttpClient;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 /**
  * 下载html网页
@@ -31,13 +36,12 @@ public class HtmlDownLoad implements FlowServiceInf {
   private static List<Integer> waitTime = new ArrayList<>();
 
   static {
-    waitTime.add(0);
-
-    waitTime.add(5);
-
-    waitTime.add(10);
-
-    waitTime.add(15);
+    String retryCfg =
+        SysPropertiesUtils.getInstance().getValue(SysPropertyEnum.HTML_DOWN_RETRY_CFG);
+    String[] retryArray = retryCfg.split(SymbolMsg.COMMA);
+    for (String item : retryArray) {
+      waitTime.add(Integer.parseInt(item));
+    }
   }
 
   @Override
@@ -50,44 +54,44 @@ public class HtmlDownLoad implements FlowServiceInf {
 
     long endTime = System.currentTimeMillis();
 
-    // 带重试的网页下载
-    HttpDownLoadData htmlContext = download(hrefUrl.getHrefUrl(), client);
+    // 带重试的网页下载,返回网页下载结果对象
+    HttpDownLoadResponse htmlRsp = download(hrefUrl.getHrefUrl(), client);
 
-    if (null != htmlContext && htmlContext.getLength() > 0) {
-
+    // 下载成功，记录的日志
+    if (null != htmlRsp && htmlRsp.isFlag()) {
       log.debug(
           "collect download html finish ,use time : {} , html length: {} ",
           (endTime - start),
-          htmlContext.getLength());
-
-      context.put(FlowKeyEnum.FLOW_DOWNLOAD_DATA_BEAN.getKey(), htmlContext);
-
-      return true;
+          htmlRsp.getData().getContext().length);
+    } else {
+      log.debug(
+          "collect download html finish ,use time : {} , html length: {} ", (endTime - start), 0);
     }
 
-    log.debug(
-        "collect download html finish ,use time : {} , html length: {} ", (endTime - start), 0);
-
-    return false;
+    context.put(FlowKeyEnum.FLOW_DOWNLOAD_DATA_BEAN.getKey(), htmlRsp);
+    return true;
   }
 
-  public HttpDownLoadData download(String url, CloseableHttpClient client) {
+  public HttpDownLoadResponse download(String url, CloseableHttpClient client) {
 
-    HttpDownLoadData htmlContext = null;
-    boolean exception = false;
+    boolean exceptionFlag;
+    Exception exception = new TimeoutException("download timeout default");
     for (int waitTime : waitTime) {
       try {
         // 进行下载文件的操作
-        htmlContext = HttpsHtmlDownloadImpl.INSTNACE.downloadHtml(url, client);
+        HttpDownLoadData htmlContext = HttpsHtmlDownloadImpl.INSTNACE.downloadHtml(url, client);
 
-        return htmlContext;
-
+        // 封装成功返回对象
+        HttpDownLoadResponse response = HttpDownLoadResponse.ok(htmlContext);
+        return response;
       } catch (Exception e) {
-        exception = true;
+        exceptionFlag = true;
+        exception = e;
         e.printStackTrace();
+        log.error("download url {} exception", url, e);
       }
 
-      if (exception) {
+      if (exceptionFlag) {
         try {
           Thread.sleep(waitTime * 1000);
         } catch (InterruptedException e) {
@@ -96,6 +100,8 @@ public class HtmlDownLoad implements FlowServiceInf {
       }
     }
 
-    return htmlContext;
+    // 封装失败返回的对象
+    HttpDownLoadResponse response = HttpDownLoadResponse.fail(exception);
+    return response;
   }
 }

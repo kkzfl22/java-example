@@ -10,10 +10,10 @@ package com.liujun.algorithm.boyerMoore.constant;
 public enum BMHtmlTagEnum {
 
   /** 网页链接标签 */
-  HTML_HREF("<a", "</a>"),
+  HTML_HREF("<a ", "</a>"),
 
   /** 网页标签javascript的内容处理 */
-  HTML_SCRIPT("<script", "</script>"),
+  HTML_SCRIPT("<script ", "</script>"),
 
   /** 网页注释标签对 */
   HTML_ANNOTATION("<!--", "-->"),
