@@ -1,6 +1,6 @@
 package com.liujun.pattern.prototype;
 
-import org.apache.commons.io.IOUtils;
+import com.liujun.utils.IOUtils;
 
 import java.io.*;
 

@@ -1,6 +1,5 @@
 package com.liujun.pattern.observe;
 
-import org.apache.log4j.Logger;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -17,10 +16,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
  */
 public class MemListen {
 
-    /**
-     * 日志
-     */
-    private Logger log = Logger.getLogger(MemListen.class);
+
 
     /**
      * 所有更新缓存操作的集合
@@ -55,7 +51,7 @@ public class MemListen {
                     result = cacheService.cacheNotifly();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    log.error("MemListen notifly key :" + key + " error:Exception info:", e);
+                    System.out.println("MemListen notifly key :" + key + " error:Exception info:"+ e);
                 }
             }
         }
@@ -80,8 +76,9 @@ public class MemListen {
                 try {
                     item.getValue().cacheNotifly();
                 } catch (Exception e) {
-                    log.error("MemListen notiflyAll key :" + item.getKey() + ";value " + item.getValue()
-                            + ";error:Exception info:", e);
+                    e.printStackTrace();
+                    System.out.println("MemListen notiflyAll key :" + item.getKey() + ";value " + item.getValue()
+                            + ";error:Exception info:"+e);
                 }
             }
         }
