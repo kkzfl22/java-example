@@ -34,9 +34,9 @@ public class TestHrefErrorProcess {
     startThread.start();
 
     HttpDownLoadResponse response = this.downloadError(hrefUrl);
-    HrefErrorProcess.INSTANCE.writeDownloadError(hrefUrl, response);
+    HrefErrorProcess.writeDownloadError(hrefUrl, response);
     response = this.downloadError(hrefUrl);
-    HrefErrorProcess.INSTANCE.writeDownloadError(hrefUrl, response);
+    HrefErrorProcess.writeDownloadError(hrefUrl, response);
 
     Thread.sleep(40000);
 

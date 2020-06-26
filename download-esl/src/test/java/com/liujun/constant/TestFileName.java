@@ -7,7 +7,7 @@ package com.liujun.constant;
 public enum TestFileName {
 
   /** 首页文件 */
-  INDEX("esl_english_inex.html"),
+  INDEX("esl_english_index.html"),
 
   /** 孩子学英语每一集 */
   CHILDREN_1("esl_english_children1.html"),
@@ -25,6 +25,12 @@ public enum TestFileName {
   MOST_POPULAR_50("50MostPopularAmericanLastNames.html"),
 
   MOST_POPULAR_100("100MostPopularAmericanLastNames.html"),
+
+  /** 带中文的网页 */
+  HTML_CHINA("esl_english_china.html"),
+
+  /** 带中文的网页 */
+  HOTEL("esl_english_hotel.html"),
   ;
 
   /** 文件名 */

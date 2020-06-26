@@ -80,6 +80,14 @@ public class HtmlContextExclusion implements FlowServiceInf {
     dataExclusion.add(
         "<button id=\"runbutton\" onclick=\"toggleTextHighlight()\" style=\"font-weight:bold;width:9em\">Start Reading</button> WPM:");
     dataExclusion.add("<small>Copyright &copy; 2020. All rights reserved.<br>eslfast.com</small>");
+    dataExclusion.add(
+        "<center><b>tesl<img src=\"https://www.rong-chang.com/s.png\" border=0 width=14 height=14>eslfast.com</b><br>");
+    dataExclusion.add(
+        "<small><a href=\"https://www.rong-chang.com/privacy.htm\">Privacy Policy</a><br>");
+    dataExclusion.add(
+        "Copyright &copy; 1994 - 2020. All rights reserved.<br>rong-chang ESL, Inc.</small>");
+    dataExclusion.add("<small>Copyright &copy; 2020. All rights reserved.<br>www.eslfast.com</small>");
+    dataExclusion.add("");
     return dataExclusion;
   }
 }

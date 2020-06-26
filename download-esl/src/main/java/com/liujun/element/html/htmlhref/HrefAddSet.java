@@ -2,6 +2,7 @@ package com.liujun.element.html.htmlhref;
 
 import com.liujun.common.flow.FlowServiceContext;
 import com.liujun.common.flow.FlowServiceInf;
+import com.liujun.common.utils.FileNameUtils;
 import com.liujun.common.utils.HtmlHrefUtils;
 import com.liujun.element.html.bean.AnalyzeBusi;
 import com.liujun.element.html.bean.HrefData;
@@ -44,6 +45,10 @@ public class HrefAddSet implements FlowServiceInf {
     } else {
       hrefName = HtmlHrefUtils.getHrefFileName(hrefData.getHrefUrl());
     }
+
+    // 文件名的处理
+    hrefName = FileNameUtils.fileNameProcess(hrefName);
+
     // 添加原来的相对路径
     hrefData.getRelativePath().addAll(currDownloadUrl.getRelativePath());
     // 再添加当前路径

@@ -4,7 +4,7 @@ import com.liujun.common.flow.FlowServiceContext;
 import com.liujun.common.flow.FlowServiceInf;
 import com.liujun.download.esl.constant.FlowKeyEnum;
 import com.liujun.element.download.HttpUtils;
-import com.liujun.element.download.bean.HttpDownLoadData;
+import com.liujun.element.download.bean.HttpDownLoadResponse;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -26,6 +26,8 @@ public class HtmlTextFileFlow implements FlowServiceInf {
   private static final List<FlowServiceInf> FLOW = new ArrayList<>();
 
   static {
+    // 进行网页的转码流程操作
+    FLOW.add(HtmlCharSetParse.INSTANCE);
     // 1,网页文件判重
     FLOW.add(HtmlContextBoomFilter.INSTANCE);
     // 2,执行网页链接分析
@@ -45,20 +47,15 @@ public class HtmlTextFileFlow implements FlowServiceInf {
   @Override
   public boolean runFlow(FlowServiceContext context) {
 
-    HttpDownLoadData htmlContext = context.getObject(FlowKeyEnum.FLOW_DOWNLOAD_DATA_BEAN.getKey());
-    if (HttpUtils.TEXT_HOME.equals(htmlContext.getContextType().getMimeType())) {
+    HttpDownLoadResponse htmlContext =
+        context.getObject(FlowKeyEnum.FLOW_DOWNLOAD_DATA_BEAN.getKey());
+    if (HttpUtils.TEXT_HOME.equals(htmlContext.getData().getContextType().getMimeType())) {
       log.debug("collect download  text process start ");
 
       FlowServiceContext contextHtmlContext = new FlowServiceContext();
 
       // 下载的网页内容信息
       contextHtmlContext.put(FlowKeyEnum.FLOW_DOWNLOAD_DATA_BEAN.getKey(), htmlContext);
-
-      String contextDataArray = new String(htmlContext.getContext());
-
-      contextHtmlContext.put(FlowKeyEnum.FLOW_DOWNLOAD_CONTEXT.getKey(), contextDataArray);
-      contextHtmlContext.put(
-          FlowKeyEnum.FLOW_DOWNLOAD_CONTEXT_ARRAY.getKey(), contextDataArray.toCharArray());
 
       // 网页下载地址信息
       contextHtmlContext.put(

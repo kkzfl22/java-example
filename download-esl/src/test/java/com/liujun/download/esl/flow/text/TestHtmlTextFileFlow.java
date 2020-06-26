@@ -5,6 +5,7 @@ import com.liujun.constant.TestFileName;
 import com.liujun.download.esl.constant.FlowKeyEnum;
 import com.liujun.element.download.HttpUtils;
 import com.liujun.element.download.bean.HttpDownLoadData;
+import com.liujun.element.download.bean.HttpDownLoadResponse;
 import com.liujun.element.html.bean.HrefData;
 import com.liujun.utils.TestFileUtils;
 import org.apache.http.entity.ContentType;
@@ -22,25 +23,46 @@ import java.nio.charset.StandardCharsets;
 public class TestHtmlTextFileFlow {
 
   @Test
-  public void testHtmlDownload() {
+  public void testTextAnalyzeIndex() {
+    ContentType contentType = ContentType.create(HttpUtils.TEXT_HOME, StandardCharsets.UTF_8);
     String dataValue = TestFileUtils.getFileContext(TestFileName.INDEX.getFileName());
+    runTextAnalyze(dataValue, "https://www.rong-chang.com/", "indexout", contentType);
+  }
+
+  @Test
+  public void testTextAnalyzeMoreAudio() {
+    ContentType contentType = ContentType.create(HttpUtils.TEXT_HOME, StandardCharsets.UTF_8);
+    String dataValue = TestFileUtils.getFileContext(TestFileName.HOTEL.getFileName());
+    runTextAnalyze(dataValue, "https://www.rong-chang.com/", "audio", contentType);
+  }
+
+  @Test
+  public void testTextAnalyzeChina() {
+    String dataValue = TestFileUtils.getFileContext(TestFileName.HTML_CHINA.getFileName());
+    ContentType contentType = ContentType.create(HttpUtils.TEXT_HOME, "gb2312");
+    runTextAnalyze(dataValue, "https://www.rong-chang.com/eflfast/", "china", contentType);
+  }
+
+  private void runTextAnalyze(String dataValue, String url, String flag, ContentType contentType) {
     FlowServiceContext context = new FlowServiceContext();
 
     HttpDownLoadData htmlData = new HttpDownLoadData();
     byte[] dataBytes = dataValue.getBytes();
     htmlData.setContext(dataBytes);
-    htmlData.setContextType(ContentType.create(HttpUtils.TEXT_HOME, StandardCharsets.UTF_8));
+    htmlData.setContextType(contentType);
     htmlData.setLength(dataBytes.length);
-    htmlData.setUrl("https://www.rong-chang.com/");
-    context.put(FlowKeyEnum.FLOW_DOWNLOAD_DATA_BEAN.getKey(), htmlData);
+    htmlData.setUrl(url);
+
+    HttpDownLoadResponse response = HttpDownLoadResponse.ok(htmlData);
+    context.put(FlowKeyEnum.FLOW_DOWNLOAD_DATA_BEAN.getKey(), response);
     context.put(FlowKeyEnum.FLOW_DOWNLOAD_CONTEXT.getKey(), dataValue);
-    context.put(FlowKeyEnum.FLOW_DOWNLOAD_CONTEXT_ARRAY.getKey(),dataValue.toCharArray());
+    context.put(FlowKeyEnum.FLOW_DOWNLOAD_CONTEXT_ARRAY.getKey(), dataValue.toCharArray());
 
     HrefData hrefUrl = new HrefData();
-    hrefUrl.setFileName("esl_index");
-    hrefUrl.setHrefUrl("https://www.rong-chang.com/");
-    hrefUrl.setHrefText("esl index");
-    hrefUrl.getRelativePath().add("esl_index");
+    hrefUrl.setFileName(flag);
+    hrefUrl.setHrefUrl(url);
+    hrefUrl.setHrefText(flag);
+    hrefUrl.getRelativePath().add(flag);
 
     context.put(FlowKeyEnum.FLOW_DOWNLOAD_ADDRESS.getKey(), hrefUrl);
 

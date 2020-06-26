@@ -1,5 +1,6 @@
 package com.liujun.element.html.tagclean;
 
+import com.liujun.algorithm.ahoCorasick.AhoCorasick;
 import com.liujun.algorithm.ahoCorasick.AhoCorasickChar;
 import com.liujun.algorithm.ahoCorasick.pojo.MatcherBusi;
 import com.liujun.common.flow.FlowServiceContext;
@@ -18,7 +19,8 @@ import com.liujun.element.html.constant.HtmlTagOneEnum;
 public class TagStartMatcher implements FlowServiceInf {
 
   /** ac自动机的匹配实例信息开始标签 */
-  private static final AhoCorasickChar ACMATCH_START_INSTANCE = new AhoCorasickChar();
+  private static final AhoCorasickChar ACMATCH_START_INSTANCE =
+      new AhoCorasickChar(AhoCorasick.Pattern.IGNORE_CASE);
 
   static {
     // 加载所有html标签，类型为<a></a>类似带开始与结束标签

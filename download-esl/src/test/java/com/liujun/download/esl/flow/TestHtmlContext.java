@@ -24,7 +24,7 @@ public class TestHtmlContext {
   @Test
   public void testContextGoToZoo() throws URISyntaxException {
     URI readPath =
-        TestHtmlHrefContextAnalyze.class
+            TestHtmlContext.class
             .getClassLoader()
             .getResource(TestFileName.TO_THE_ZOO.getFileName())
             .toURI();
@@ -35,7 +35,7 @@ public class TestHtmlContext {
   @Test
   public void testContextChristmas() throws URISyntaxException {
     URI readPath =
-        TestHtmlHrefContextAnalyze.class
+        TestHtmlContext.class
             .getClassLoader()
             .getResource(TestFileName.CHRISTMAS_TIME.getFileName())
             .toURI();
@@ -46,7 +46,7 @@ public class TestHtmlContext {
   @Test
   public void testContextExercisingt() throws URISyntaxException {
     URI readPath =
-        TestHtmlHrefContextAnalyze.class
+        TestHtmlContext.class
             .getClassLoader()
             .getResource(TestFileName.EXERCISINGT.getFileName())
             .toURI();
@@ -57,7 +57,7 @@ public class TestHtmlContext {
   @Test
   public void testContextHeTakesTest() throws URISyntaxException {
     URI readPath =
-        TestHtmlHrefContextAnalyze.class
+        TestHtmlContext.class
             .getClassLoader()
             .getResource(TestFileName.HE_TAKE_TEST.getFileName())
             .toURI();

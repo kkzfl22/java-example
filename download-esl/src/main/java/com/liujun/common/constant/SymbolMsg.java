@@ -53,4 +53,7 @@ public class SymbolMsg {
 
   /** 多换换行的标识符 */
   public static final String PARSE_LINE = "---";
+
+  /** 引号 */
+  public static final String QUOTES = "\"";
 }

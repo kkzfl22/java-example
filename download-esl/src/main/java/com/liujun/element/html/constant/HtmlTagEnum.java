@@ -1,7 +1,6 @@
 package com.liujun.element.html.constant;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -979,7 +978,10 @@ public enum HtmlTagEnum {
   // ******************************program程序结束*************************************************************
 
   /** 网页标签 */
-  HTML_CIRCLE("<circle", "</circle>");
+  HTML_CIRCLE("<circle", "</circle>"),
+
+  /** 一个自定义标签 */
+  G("<g", "</g>");
 
   /** 标签开始 */
   private String start;

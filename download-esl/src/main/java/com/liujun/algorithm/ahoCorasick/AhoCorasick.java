@@ -1,9 +1,10 @@
 package com.liujun.algorithm.ahoCorasick;
 
 import com.liujun.algorithm.ahoCorasick.pojo.MatcherBusi;
-import com.liujun.common.constant.SysConfig;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 /**
  * ac自动机算法，只用于数字的匹配操作
@@ -16,6 +17,24 @@ public abstract class AhoCorasick {
 
   /** ac自动机的大小 */
   private final int AC_SIZE = getAcSize();
+
+  /** 模式 */
+  protected final Pattern pattern;
+
+  public enum Pattern {
+    /** 默认 */
+    DEFAULT,
+    /** 不区分大小写模式 */
+    IGNORE_CASE;
+  }
+
+  public AhoCorasick() {
+    this.pattern = Pattern.DEFAULT;
+  }
+
+  public AhoCorasick(Pattern pattern) {
+    this.pattern = pattern;
+  }
 
   /**
    * 获取当前ac自动机的字符集大小
@@ -147,54 +166,6 @@ public abstract class AhoCorasick {
   /**
    * 进行字符的匹配操作,进行多次字符匹配操作
    *
-   * @param src 匹配的主串信息
-   * @return 匹配的字符串信息
-   */
-  public String matchOne(String src) {
-
-    // 进行字符串的匹配操作
-    char[] mainChar = src.toCharArray();
-
-    AcNode pmatch = root;
-
-    // 进行主串遍历
-    for (int i = 0; i < mainChar.length; i++) {
-      int index = this.getIndex(mainChar[i]);
-
-      if (index >= AC_SIZE || index == -1) {
-        continue;
-      }
-
-      // 失败指针的检查,如果当前字符的下一个字符不能被找到，并且不是根节点
-      while (pmatch.childred[index] == null && pmatch != root) {
-        pmatch = pmatch.fail;
-      }
-
-      // 获取当前字符在失败指针中的位置
-      pmatch = pmatch.childred[index];
-
-      // 如果不能被找到，则重新从root节点开始匹配
-      if (pmatch == null) {
-        pmatch = root;
-      }
-
-      AcNode tmpMatch = pmatch;
-
-      while (tmpMatch != root) {
-        // 如果当前能够被匹配成功，则返回匹配的字符串信息,并结束
-        if (tmpMatch.isEndingChar == true) {
-          return tmpMatch.srcData;
-        }
-        tmpMatch = tmpMatch.fail;
-      }
-    }
-
-    return null;
-  }
-
-  /**
-   * 进行字符的匹配操作,进行多次字符匹配操作
-   *
    * @param mainChar 主串信息
    * @param startIndex 开始的位置
    * @return 匹配的对象信息
@@ -257,7 +228,8 @@ public abstract class AhoCorasick {
 
     // 进行主串遍历
     for (int i = startIndex; i < mainChar.length; i++) {
-      int index = this.getIgnoreCaseIndex(mainChar[i]);
+      // 获取字符的asc码索引索引位置，当为大写时，转换为小写
+      int index = this.getIndex(mainChar[i]);
 
       if (index >= AC_SIZE || index <= -1) {
         continue;
@@ -342,59 +314,6 @@ public abstract class AhoCorasick {
     return -1;
   }
 
-  /**
-   * 进行字符的匹配操作,进行多次字符匹配操作
-   *
-   * <p>即方法多次调用，通过matchMap记录下查找的位置信息
-   *
-   * @param src 匹配的字符串信息
-   */
-  public Map<String, Integer> matchMult(String src) {
-
-    Map<String, Integer> matchMap = new HashMap<>();
-
-    // 进行字符串的匹配操作
-    char[] mainChar = src.toCharArray();
-
-    AcNode pmatch = root;
-
-    // 进行主串遍历
-    for (int i = 0; i < mainChar.length; i++) {
-      int index = this.getIndex(mainChar[i]);
-
-      // 超过字符集，直接忽略
-      if (index < 0 || index > AC_SIZE) {
-        continue;
-      }
-
-      // 失败指针的检查,如果当前字符的下一个字符不能被找到，并且不是根节点
-      while (pmatch.childred[index] == null && pmatch != root) {
-        pmatch = pmatch.fail;
-      }
-
-      // 获取当前字符在失败指针中的位置
-      pmatch = pmatch.childred[index];
-
-      // 如果不能被找到，则重新从root节点开始匹配
-      if (pmatch == null) {
-        pmatch = root;
-      }
-
-      AcNode tmpMatch = pmatch;
-
-      while (tmpMatch != root) {
-        if (tmpMatch.isEndingChar == true) {
-          int matPostion = i - tmpMatch.length + 1;
-
-          matchMap.put(tmpMatch.srcData, matPostion);
-        }
-        tmpMatch = tmpMatch.fail;
-      }
-    }
-
-    return matchMap;
-  }
-
   /** trie 树的节点信息 */
   public class AcNode {
 
@@ -419,28 +338,5 @@ public abstract class AhoCorasick {
     public AcNode(char data) {
       this.data = data;
     }
-  }
-
-  /**
-   * 进行不区分大小写的字符检查获取
-   *
-   * @param mainChar 字符信息
-   * @return
-   */
-  private int getIgnoreCaseIndex(char mainChar) {
-
-    int index = this.getIndex(mainChar);
-
-    // 超过字符集范围返回-1
-    if (index > AC_SIZE) {
-      return -1;
-    } else {
-      // 如果检查发现在大写字符的范围内，则转换为小写字符的索引位置
-      if (index >= SysConfig.UPPER_CASE_START && index <= SysConfig.UPPER_CASE_END) {
-        return index + SysConfig.UPPER_TO_LOWER;
-      }
-    }
-
-    return index;
   }
 }

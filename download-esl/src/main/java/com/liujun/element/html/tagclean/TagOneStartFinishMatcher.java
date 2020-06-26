@@ -8,8 +8,6 @@ import com.liujun.element.html.bean.DataTagPosition;
 import com.liujun.element.html.constant.HtmlTagFlowEnum;
 import com.liujun.element.html.constant.TagComm;
 
-import java.util.List;
-
 /**
  * 进行开始标签的结束位置查找
  *
@@ -55,17 +53,12 @@ public class TagOneStartFinishMatcher implements FlowServiceInf {
       position = matchEndBusi.getMatcherIndex() + matchEndBusi.getMatcherKey().length();
       context.put(HtmlTagFlowEnum.TAG_INPUT_POSITION_START.getKey(), position);
 
-      List<DataTagPosition> outList =
-          context.getObject(HtmlTagFlowEnum.TAG_INOUTP_LIST_POSITION.getKey());
-
       DataTagPosition pos = new DataTagPosition();
       pos.setStart(startTagMatch.getMatcherIndex());
       pos.setEnd(matchEndBusi.getMatcherIndex() + matchEndBusi.getMatcherKey().length());
       pos.setTagName(startTagMatch.getMatcherKey());
 
-      outList.add(pos);
-
-      return false;
+      context.put(HtmlTagFlowEnum.TAG_PROC_SPECIFY.getKey(), pos);
     }
     return true;
   }

@@ -1,5 +1,6 @@
 package com.liujun.element.html.htmlcontext;
 
+import com.liujun.algorithm.ahoCorasick.AhoCorasick;
 import com.liujun.algorithm.ahoCorasick.AhoCorasickChar;
 import com.liujun.algorithm.ahoCorasick.pojo.MatcherBusi;
 import com.liujun.common.flow.FlowServiceContext;
@@ -21,8 +22,8 @@ public class HtmlContextHrefReplace implements FlowServiceInf {
 
   public static final HtmlContextHrefReplace INSTANCE = new HtmlContextHrefReplace();
 
-  /** ac自动机的匹配实例信息开始标签 */
-  private static final AhoCorasickChar AC_EXCLUSION_INSTANCE = new AhoCorasickChar();
+  /** ac自动机的匹配实例信息开始标签 ,并且当前为不区分大小写的匹配 */
+  private static final AhoCorasickChar AC_EXCLUSION_INSTANCE = new AhoCorasickChar(AhoCorasick.Pattern.IGNORE_CASE);
 
   /** href替换后的字符 */
   private static final Map<String, String> REPLACE_DATA_MAP = getReplateMap();

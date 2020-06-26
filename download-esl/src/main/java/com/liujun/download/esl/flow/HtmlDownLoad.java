@@ -8,7 +8,6 @@ import com.liujun.common.flow.FlowServiceInf;
 import com.liujun.download.esl.constant.FlowKeyEnum;
 import com.liujun.element.download.HttpsClientManager;
 import com.liujun.element.download.HttpsHtmlDownloadImpl;
-import com.liujun.element.download.bean.HttpDownLoadData;
 import com.liujun.element.download.bean.HttpDownLoadResponse;
 import com.liujun.element.html.bean.HrefData;
 import lombok.extern.slf4j.Slf4j;
@@ -59,10 +58,11 @@ public class HtmlDownLoad implements FlowServiceInf {
 
     // 下载成功，记录的日志
     if (null != htmlRsp && htmlRsp.isFlag()) {
+
       log.debug(
           "collect download html finish ,use time : {} , html length: {} ",
           (endTime - start),
-          htmlRsp.getData().getContext().length);
+          htmlRsp.getData());
     } else {
       log.debug(
           "collect download html finish ,use time : {} , html length: {} ", (endTime - start), 0);
@@ -79,11 +79,13 @@ public class HtmlDownLoad implements FlowServiceInf {
     for (int waitTime : waitTime) {
       try {
         // 进行下载文件的操作
-        HttpDownLoadData htmlContext = HttpsHtmlDownloadImpl.INSTNACE.downloadHtml(url, client);
+        HttpDownLoadResponse htmlRsp = HttpsHtmlDownloadImpl.INSTNACE.downloadHtml(url, client);
 
-        // 封装成功返回对象
-        HttpDownLoadResponse response = HttpDownLoadResponse.ok(htmlContext);
-        return response;
+        if (htmlRsp == null) {
+          return HttpDownLoadResponse.fail(new RuntimeException(" response is null "));
+        }
+
+        return htmlRsp;
       } catch (Exception e) {
         exceptionFlag = true;
         exception = e;

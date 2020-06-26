@@ -2,6 +2,7 @@ package com.liujun.common.utils;
 
 import com.liujun.common.constant.SymbolMsg;
 import com.liujun.element.constant.HttpVersionEnum;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 网页链接处理
@@ -29,6 +30,26 @@ public class HtmlHrefUtils {
   }
 
   /**
+   * 获取链接的后缀名
+   *
+   * @param hrefName
+   * @return
+   */
+  public static String getSuffixName(String hrefName) {
+    if (StringUtils.isEmpty(hrefName)) {
+      return SymbolMsg.EMPTY;
+    }
+
+    int pointIndex = hrefName.lastIndexOf(SymbolMsg.POINT);
+
+    if (pointIndex != -1) {
+      return hrefName.substring(pointIndex);
+    }
+
+    return SymbolMsg.EMPTY;
+  }
+
+  /**
    * 获取链接的名称
    *
    * @param hrefInfo 链接信息
@@ -38,7 +59,7 @@ public class HtmlHrefUtils {
     String fileName = SymbolMsg.EMPTY;
     int hrefIndex;
     if ((hrefIndex = hrefInfo.lastIndexOf(SymbolMsg.PATH)) != -1) {
-      fileName = hrefInfo.substring(hrefIndex+1);
+      fileName = hrefInfo.substring(hrefIndex + 1);
       int pointIndex = -1;
       while ((pointIndex = fileName.indexOf(SymbolMsg.POINT)) != -1) {
         fileName = fileName.substring(0, pointIndex);

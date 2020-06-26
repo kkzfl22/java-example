@@ -24,6 +24,9 @@ public enum HtmlTagFlowEnum {
   /** 输出标签结束 */
   TAG_OUTPUT_FINISH_FLAG("tag_output_finish_flag"),
 
+  /** 指定标签的处理 */
+  TAG_PROC_SPECIFY("tag_proc_specify"),
+
   /** 标签后进行过滤的输入数据信息 */
   TAG_AFTER_FILTER_INPUT_CONTEXT("tag_after_filter_input_context"),
 

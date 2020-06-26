@@ -1,6 +1,6 @@
 package com.liujun.element.download;
 
-import com.liujun.element.download.bean.HttpDownLoadData;
+import com.liujun.element.download.bean.HttpDownLoadResponse;
 import org.apache.http.impl.client.CloseableHttpClient;
 
 /**
@@ -19,5 +19,5 @@ public interface HtmlDownLoadInf {
    * @param client 连接信息
    * @return 网页内容
    */
-  HttpDownLoadData downloadHtml(String url, CloseableHttpClient client) throws Exception;
+  HttpDownLoadResponse downloadHtml(String url, CloseableHttpClient client) throws Exception;
 }

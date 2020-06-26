@@ -35,8 +35,8 @@ public class HrefTextProcess implements FlowServiceInf {
       // 2,进行网页标签的处理，去掉网页标签段
       char[] htmlClean = HtmlSectionTagProcess.INSTANCE.cleanHtmlTagSection(cleanAnnotation);
 
-      // 3,文件内容清除标签操作
-      String hrefProcessText = HtmlTagCleanProcess.INSTANCE.cleanHtmlTag(htmlClean);
+      // 3,清除链接中的网页标签
+      String hrefProcessText = HtmlTagCleanProcess.INSTANCE.cleanHrefHtmlTag(htmlClean);
       busi.setHrefContext(hrefProcessText);
     }
     return true;

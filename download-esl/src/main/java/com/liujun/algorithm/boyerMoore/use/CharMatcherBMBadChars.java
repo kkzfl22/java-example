@@ -3,7 +3,7 @@ package com.liujun.algorithm.boyerMoore.use;
 import com.liujun.common.constant.SysConfig;
 
 /**
- * 高效的字符串匹配算法KMP算法,使用坏字符的规则
+ * 高效的字符串匹配算法BM算法,使用坏字符的规则
  *
  * @author liujun
  * @version 0.0.1
@@ -172,7 +172,7 @@ public class CharMatcherBMBadChars {
   }
 
   /**
-   * 使用kmp算法进行字符串的匹配操作,可以进行英文不区分大小写的匹配
+   * 使用kmp算法进行字符串的匹配操作,可以进行英文不区分大小写的匹配,在构建字符时需使用小写
    *
    * @param str 原始字符信息
    * @param inputStart 起始索引位置

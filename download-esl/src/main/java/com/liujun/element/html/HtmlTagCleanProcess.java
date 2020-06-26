@@ -27,30 +27,52 @@ public class HtmlTagCleanProcess {
   /** 防止死循环操作 */
   private static final int MAX_LOOP_NUM = 50000;
 
-  private static final List<FlowServiceInf> FLOW = new ArrayList<>();
+  private static final List<FlowServiceInf> FLOW_CLEAN_HTML = new ArrayList<>();
 
-  private static final List<FlowServiceInf> FLOWFILTER = new ArrayList<>();
+  private static final List<FlowServiceInf> FLOW_CLEAN_HREF = new ArrayList<>();
+
+  private static final List<FlowServiceInf> FLOW_FILTER = new ArrayList<>();
 
   static {
+    // **链接中的网页标签清除**start**********************
     // 进行开始标签的查找
-    FLOW.add(TagStartMatcher.INSTANCE);
+    FLOW_CLEAN_HREF.add(TagStartMatcher.INSTANCE);
     // 进行单标签的结束查找
-    FLOW.add(TagOneStartFinishMatcher.INSTANCE);
+    FLOW_CLEAN_HREF.add(TagOneStartFinishMatcher.INSTANCE);
+    // 进行指定的<input type="button"过滤操作
+    FLOW_CLEAN_HREF.add(SpecifyTagInputButtonProcess.INSTANCE);
+    // 进行指定的<button过滤操作
+    FLOW_CLEAN_HREF.add(SpecifyTagButtonProcess.INSTANCE);
+    // 将非过滤的数据加入到集合中
+    FLOW_CLEAN_HREF.add(TagResultListAdd.INSTANCE);
     // 匹配完成后，则做退出处理
-    FLOW.add(TagFinishOut.INSTANCE);
+    FLOW_CLEAN_HREF.add(TagFinishOut.INSTANCE);
+    // **链接中的网页标签清除**finish**********************
+
+    // **网页内容中标签清除**start**********************
+    // 进行开始标签的查找
+    FLOW_CLEAN_HTML.add(TagStartMatcher.INSTANCE);
+    // 进行单标签的结束查找
+    FLOW_CLEAN_HTML.add(TagOneStartFinishMatcher.INSTANCE);
+    // 将非过滤的数据加入到集合中
+    FLOW_CLEAN_HTML.add(TagResultListAdd.INSTANCE);
+    // 匹配完成后，则做退出处理
+    FLOW_CLEAN_HTML.add(TagFinishOut.INSTANCE);
+    // **网页内容中标签清除**finish**********************
+
     // 进行空的处理
-    FLOWFILTER.add(FilterEmpty.INSTANCE);
+    FLOW_FILTER.add(FilterEmpty.INSTANCE);
     // 进行标签的过滤操作
-    FLOWFILTER.add(FilterOneSymbol.INSTANCE);
+    FLOW_FILTER.add(FilterOneSymbol.INSTANCE);
     // 进行多种组合的过滤操作
-    FLOWFILTER.add(FilterMultSymbol.INSTANCE);
+    FLOW_FILTER.add(FilterMultSymbol.INSTANCE);
   }
 
   /** 日志 */
   private Logger logger = LoggerFactory.getLogger(HtmlTagCleanProcess.class);
 
   /**
-   * 清除所有网页标签
+   * 清除网页内容中标签
    *
    * @param htmlContextArrays 网页内容
    * @return 网页信息
@@ -58,7 +80,22 @@ public class HtmlTagCleanProcess {
   public String cleanHtmlTag(char[] htmlContextArrays) {
 
     // 查找所有标签
-    List<DataTagPosition> tagList = this.findTagList(htmlContextArrays);
+    List<DataTagPosition> tagList = this.findTagList(htmlContextArrays, FLOW_CLEAN_HTML);
+
+    // 2,提取出所有有字符段信息
+    return getContext(tagList, htmlContextArrays);
+  }
+
+  /**
+   * 清除链接中的网页标签
+   *
+   * @param htmlContextArrays 网页内容
+   * @return 网页信息
+   */
+  public String cleanHrefHtmlTag(char[] htmlContextArrays) {
+
+    // 查找所有标签
+    List<DataTagPosition> tagList = this.findTagList(htmlContextArrays, FLOW_CLEAN_HREF);
 
     // 2,提取出所有有字符段信息
     return getContext(tagList, htmlContextArrays);
@@ -158,7 +195,7 @@ public class HtmlTagCleanProcess {
       boolean filterRsp = true;
       try {
 
-        for (FlowServiceInf service : FLOWFILTER) {
+        for (FlowServiceInf service : FLOW_FILTER) {
           if (!service.runFlow(filterContext)) {
             filterRsp = false;
             break;
@@ -183,7 +220,7 @@ public class HtmlTagCleanProcess {
    * @param outArrays 输出的字符信息
    * @return 提取的标签信息
    */
-  private List<DataTagPosition> findTagList(char[] outArrays) {
+  private List<DataTagPosition> findTagList(char[] outArrays, List<FlowServiceInf> flow) {
     FlowServiceContext context = new FlowServiceContext();
 
     context.put(HtmlTagFlowEnum.TAG_INPUT_CONTEXT_ARRAY.getKey(), outArrays);
@@ -195,7 +232,7 @@ public class HtmlTagCleanProcess {
       int loopIndex = 0;
       while (loopIndex < MAX_LOOP_NUM) {
 
-        for (FlowServiceInf flowItem : FLOW) {
+        for (FlowServiceInf flowItem : flow) {
           if (!flowItem.runFlow(context)) {
             break;
           }

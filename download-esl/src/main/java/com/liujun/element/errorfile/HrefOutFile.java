@@ -2,6 +2,7 @@ package com.liujun.element.errorfile;
 
 import com.liujun.common.constant.SymbolMsg;
 import com.liujun.common.utils.CommonIOUtils;
+import com.liujun.common.utils.FileUtils;
 import com.liujun.element.html.bean.HrefData;
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,10 +29,12 @@ public class HrefOutFile {
    * @param hrefUrl 当前下载的url信息
    */
   public void writeCurrHref(String hrefPath, HrefData hrefUrl) {
+    FileUtils.dirCheckAndMkdirs(hrefPath);
     String outPath = hrefPath + SymbolMsg.PATH + FILE_NAME;
 
     OutputStream output = null;
     try {
+
       output = new FileOutputStream(outPath);
       byte[] outData = hrefUrl.getHrefUrl().getBytes();
       // 将数据写入文件中

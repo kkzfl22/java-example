@@ -53,6 +53,12 @@ public class HtmlHrefAnalyze {
     FLOW.add(HrefTextSpecifyClean.INSTANCE);
     // 检查网页链接是否已经下载过
     FLOW.add(HrefBloomFilter.INSTANCE);
+    // 链接的input button处理
+    FLOW.add(HrefTextInputButtonProcess.INSTANCE);
+    // <button的处理
+    FLOW.add(HrefTextButtonProcess.INSTANCE);
+    // 针对编码后的字符进行解码操作
+    FLOW.add(HrefTextDecode.INSTANCE);
     // 将已经处理好的链接添加到集合中
     FLOW.add(HrefAddSet.INSTANCE);
   }

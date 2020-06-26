@@ -2,6 +2,7 @@ package com.liujun.element.download;
 
 import com.liujun.common.constant.SysConfig;
 import com.liujun.element.download.bean.HttpDownLoadData;
+import com.liujun.element.download.bean.HttpDownLoadResponse;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
@@ -44,14 +45,15 @@ public class HttpsHtmlDownloadImpl implements HtmlDownLoadInf {
   public static final HttpsHtmlDownloadImpl INSTNACE = new HttpsHtmlDownloadImpl();
 
   @Override
-  public HttpDownLoadData downloadHtml(String url, CloseableHttpClient client) throws Exception {
+  public HttpDownLoadResponse downloadHtml(String url, CloseableHttpClient client)
+      throws Exception {
 
     long startTime = System.currentTimeMillis();
 
     CloseableHttpResponse response = null;
 
     byte[] outDataBytes = new byte[0];
-    HttpDownLoadData data = null;
+    HttpDownLoadResponse responseData = null;
 
     try {
 
@@ -91,11 +93,19 @@ public class HttpsHtmlDownloadImpl implements HtmlDownLoadInf {
           buffer = null;
           ContentType type = ContentType.get(entity);
 
-          data = new HttpDownLoadData();
+          HttpDownLoadData data = new HttpDownLoadData();
           data.setContext(outDataBytes);
           data.setLength(contextLength);
           data.setContextType(type);
+          // 设置响应信息
+          responseData = HttpDownLoadResponse.ok(data);
         }
+      } else {
+        int code = response.getStatusLine().getStatusCode();
+        // 设置响应信息
+        responseData =
+            HttpDownLoadResponse.fail(
+                new RuntimeException("server response error : code :" + code));
       }
 
     } catch (ClientProtocolException e) {
@@ -129,7 +139,7 @@ public class HttpsHtmlDownloadImpl implements HtmlDownLoadInf {
           "http download :" + url + ",use time:" + (endTime - startTime) + " html length 0");
     }
 
-    return data;
+    return responseData;
   }
 
   /**

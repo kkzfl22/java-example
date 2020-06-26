@@ -1,5 +1,6 @@
 package com.liujun.element.html.htmlhref;
 
+import com.liujun.algorithm.ahoCorasick.AhoCorasick;
 import com.liujun.algorithm.ahoCorasick.AhoCorasickChar;
 import com.liujun.algorithm.ahoCorasick.pojo.MatcherBusi;
 import com.liujun.common.flow.FlowServiceContext;
@@ -20,7 +21,7 @@ public class HrefTextSpecifyClean implements FlowServiceInf {
   public static final HrefTextSpecifyClean INSTANCE = new HrefTextSpecifyClean();
 
   /** ac自动机的匹配标签带空格的情况 */
-  private static final AhoCorasickChar MULT_SYMBOL = new AhoCorasickChar();
+  private static final AhoCorasickChar MULT_SYMBOL = new AhoCorasickChar(AhoCorasick.Pattern.IGNORE_CASE);
 
   /** 最大匹配次数，用于防止死循环 */
   private static final int MAX_NUM = 1000;

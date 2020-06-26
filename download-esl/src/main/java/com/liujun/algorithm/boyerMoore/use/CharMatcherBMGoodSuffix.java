@@ -1,7 +1,7 @@
 package com.liujun.algorithm.boyerMoore.use;
 
 /**
- * 进行字符串bm算法的实现，此使用坏字符规则
+ * 进行字符串bm算法的实现，此使用好后缀
  *
  * @author liujun
  * @version 0.0.1

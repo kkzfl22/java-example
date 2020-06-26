@@ -1,7 +1,5 @@
 package com.liujun.utils;
 
-import com.liujun.download.esl.flow.TestHtmlHrefContextAnalyze;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -26,14 +24,9 @@ public class TestFileUtils {
 
     String dataValue = null;
     try {
-      URI readPath =
-          TestHtmlHrefContextAnalyze.class
-              .getClassLoader()
-              .getResource(BASE_PATH + filePath)
-              .toURI();
+      URI readPath = TestFileUtils.class.getClassLoader().getResource(BASE_PATH + filePath).toURI();
 
-      byte[] data = new byte[0];
-      data = Files.readAllBytes(Paths.get(readPath));
+      byte[] data = Files.readAllBytes(Paths.get(readPath));
       dataValue = new String(data);
     } catch (IOException e) {
       e.printStackTrace();
