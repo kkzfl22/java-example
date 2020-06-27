@@ -36,14 +36,24 @@ public class ContextParseOtherParse implements FlowServiceInf {
       throw new RuntimeException("charset error:" + charSetStr);
     }
 
-    byte[] dataArrays = context.getObject(HttpCharsetFlowEnum.CHARSET_INPUT_INPUTARRAYS.getKey());
-    // 使用原来的编码进行编译成字符
-    String outDataValue = new String(dataArrays, charset);
+    // 如果编码对应
+    if (charset.name().equalsIgnoreCase(charSetStr)) {
 
-    // 再统一转换到UTF-8的编码中
-    outDataValue = new String(outDataValue.getBytes(StandardCharsets.UTF_8));
+      byte[] dataArrays = context.getObject(HttpCharsetFlowEnum.CHARSET_INPUT_INPUTARRAYS.getKey());
+      // 使用原来的编码进行编译成字符
+      String outDataValue = new String(dataArrays, charset);
 
-    context.put(HttpCharsetFlowEnum.CHARSET_OUTPU_HTMLCONTEXT.getKey(), outDataValue);
+      // 再统一转换到UTF-8的编码中
+      outDataValue = new String(outDataValue.getBytes(StandardCharsets.UTF_8));
+
+      context.put(HttpCharsetFlowEnum.CHARSET_OUTPU_HTMLCONTEXT.getKey(), outDataValue);
+    } else {
+      byte[] dataArrays = context.getObject(HttpCharsetFlowEnum.CHARSET_INPUT_INPUTARRAYS.getKey());
+      // 使用原来的编码进行编译成字符
+      String outDataValue = new String(dataArrays, StandardCharsets.UTF_8);
+
+      context.put(HttpCharsetFlowEnum.CHARSET_OUTPU_HTMLCONTEXT.getKey(), outDataValue);
+    }
 
     return true;
   }

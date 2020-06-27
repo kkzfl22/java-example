@@ -36,6 +36,8 @@ public class HtmlContextGetService {
     FLOW.add(HtmlTitleGetFlow.INSTANCE);
     // 去队网页头信息
     FLOW.add(HtmlHeadCleanFlow.INSTANCE);
+    // 去除网页版本信息
+    FLOW.add(HtmlCopyRightCleanFlow.INSTANCE);
     // 进行网页的标签段处理
     FLOW.add(HtmlTagSectionFlow.INSTANCE);
     // 2,注释的特殊处理
@@ -63,10 +65,14 @@ public class HtmlContextGetService {
 
     long start = System.currentTimeMillis();
 
-    HtmlData outData = this.analyzeHtml(dataHtml,currHtmlHref);
+
+
+    HtmlData outData = this.analyzeHtml(dataHtml, currHtmlHref);
 
     long end = System.currentTimeMillis();
     long sumValue = end - start;
+
+    logger.info("analyze url {} html  {} use time {} ", currHtmlHref, dataHtml, sumValue);
 
     return outData;
   }

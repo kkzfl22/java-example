@@ -18,4 +18,11 @@ public class TestHttpsDownload {
     HttpDownLoadResponse audio = HttpsHtmlDownloadImpl.INSTNACE.downloadHtml(urlAddress, client);
     System.out.println(audio);
   }
+
+  @Test
+  public void testDownloadHtml2() throws Exception {
+    String urlAddress = "https://www.rong-chang.com/resources/esp.htm";
+    HttpDownLoadResponse audio = HttpsHtmlDownloadImpl.INSTNACE.downloadHtml(urlAddress, client);
+    System.out.println(audio);
+  }
 }

@@ -31,7 +31,9 @@ public enum TestFileName {
 
   /** 带中文的网页 */
   HOTEL("esl_english_hotel.html"),
-  ;
+
+  /** 编码特殊的网页 */
+  ENGLISH_FOR_SPECIFIC_PURPOSES("CharsetEnglishforSpecificPurposes.html");
 
   /** 文件名 */
   private String fileName;

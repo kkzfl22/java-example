@@ -63,11 +63,13 @@ public class HtmlAnalyzeFLow {
 
     while (!shutdownFlag.get()) {
 
-      HrefData dataHref = HtmlHrefQueueManager.INSTANCE.getHrefQueue().getHref();
+      // 执行下载操作
+      boolean rsp = downloadHtmlOne();
 
-      if (dataHref == null) {
+      // 当下载队列数据为空时，则休眠
+      if (!rsp) {
         try {
-          Thread.sleep(3000L);
+          Thread.sleep(2000L);
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
@@ -81,13 +83,25 @@ public class HtmlAnalyzeFLow {
         continue;
       } else {
         sleepIndex = 0;
-        // 进行数据的下载分析
-        downloadAndAnalyzeHtml(dataHref);
       }
     }
 
     // 设置运行状态为false
     runFlag.set(false);
+  }
+
+  public boolean downloadHtmlOne() {
+
+    HrefData dataHref = HtmlHrefQueueManager.INSTANCE.getHrefQueue().getHref();
+
+    if (dataHref != null) {
+      // 进行数据的下载分析
+      downloadAndAnalyzeHtml(dataHref);
+
+      return true;
+    }
+
+    return false;
   }
 
   /**

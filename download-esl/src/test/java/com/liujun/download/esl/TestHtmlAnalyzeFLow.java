@@ -36,4 +36,21 @@ public class TestHtmlAnalyzeFLow {
 
     HtmlAnalyzeFLow.INSTANCE.downloadHtml();
   }
+
+  @Test
+  public void runDown() {
+    runDownOne("https://www.rong-chang.com/resources/esp.htm", "esp");
+  }
+
+  private void runDownOne(String url, String name) {
+    HrefData hrefData = new HrefData();
+    hrefData.setHrefUrl(url);
+    hrefData.setFileName(name);
+    hrefData.setHrefText(name);
+    hrefData.getRelativePath().add(name);
+
+    HtmlHrefQueueManager.INSTANCE.getHrefQueue().putHref(hrefData);
+
+    HtmlAnalyzeFLow.INSTANCE.downloadHtmlOne();
+  }
 }

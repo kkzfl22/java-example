@@ -1,5 +1,6 @@
 package com.liujun.element.download.charsetFlow;
 
+import com.liujun.common.constant.SymbolMsg;
 import com.liujun.common.flow.FlowServiceContext;
 import com.liujun.common.flow.FlowServiceInf;
 import com.liujun.element.constant.HttpCharsetFlowEnum;
@@ -51,6 +52,14 @@ public class HtmlCharsetFlow {
       }
     }
 
-    return context.getObject(HttpCharsetFlowEnum.CHARSET_OUTPU_HTMLCONTEXT.getKey());
+    String outHtml = context.getObject(HttpCharsetFlowEnum.CHARSET_OUTPU_HTMLCONTEXT.getKey());
+
+    // 1,找到网页开始的位置，去掉网页中的开始特殊符号
+    int startIndex = 0;
+    if ((startIndex = outHtml.indexOf(SymbolMsg.LEFT_OPEN_ANGLE)) != -1) {
+      outHtml = outHtml.substring(startIndex);
+    }
+
+    return outHtml;
   }
 }
