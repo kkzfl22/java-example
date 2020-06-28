@@ -3,6 +3,7 @@ package com.liujun.element.errorfile;
 import com.liujun.common.constant.PathCfg;
 import com.liujun.common.constant.SymbolMsg;
 import com.liujun.common.utils.CommonIOUtils;
+import com.liujun.common.utils.FileUtils;
 import com.liujun.element.html.bean.HrefData;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,8 +25,7 @@ public class HrefOutExceptionFile {
   private static final String FILE_NAME = "html_href_out_exception.txt";
 
   /** 基础路径 */
-  private static final String ERROR_PATH =
-      PathCfg.BASEPATH + PathCfg.COLLECT_PATH + SymbolMsg.PATH + FILE_NAME;
+  private static final String ERROR_PATH = PathCfg.BASEPATH + PathCfg.COLLECT_PATH;
 
   public static final HrefOutExceptionFile INSTANCE = new HrefOutExceptionFile();
 
@@ -38,7 +38,10 @@ public class HrefOutExceptionFile {
 
   public void open() {
     try {
-      outWrite = new FileWriter(ERROR_PATH, true);
+      FileUtils.dirCheckAndMkdirs(ERROR_PATH);
+
+      String outPathFile = ERROR_PATH + SymbolMsg.PATH + FILE_NAME;
+      outWrite = new FileWriter(outPathFile, true);
       bufferedWriter = new BufferedWriter(outWrite);
     } catch (FileNotFoundException e) {
       e.printStackTrace();

@@ -5,6 +5,7 @@ import com.liujun.download.esl.constant.FlowKeyEnum;
 import com.liujun.download.esl.flow.HtmlDownLoad;
 import com.liujun.element.download.bean.HttpDownLoadResponse;
 import com.liujun.element.html.bean.HrefData;
+import com.liujun.schedule.HrefErrorProcessTask;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -14,7 +15,7 @@ import org.junit.Test;
  * @author liujun
  * @version 0.0.1
  */
-public class TestHrefErrorProcess {
+public class TestHrefErrorProcessTask {
 
   @Test
   public void testRunError() throws InterruptedException {
@@ -27,22 +28,22 @@ public class TestHrefErrorProcess {
     hrefUrl.getRelativePath().add("download");
 
     // 定时保存任务启动
-    HrefErrorProcess.INSTANCE.startRegister();
+    HrefErrorProcessTask.INSTANCE.startRegister();
 
     // 启动保存队列
     Thread startThread = new Thread(new ScheduleTaskSave());
     startThread.start();
 
     HttpDownLoadResponse response = this.downloadError(hrefUrl);
-    HrefErrorProcess.writeDownloadError(hrefUrl, response);
+    HrefErrorProcessTask.writeDownloadError(hrefUrl, response);
     response = this.downloadError(hrefUrl);
-    HrefErrorProcess.writeDownloadError(hrefUrl, response);
+    HrefErrorProcessTask.writeDownloadError(hrefUrl, response);
 
     Thread.sleep(40000);
 
     // 定时保存退出
     ScheduleTaskSave.shutdown();
-    HrefErrorProcess.INSTANCE.close();
+    HrefErrorProcessTask.INSTANCE.close();
   }
 
   private HttpDownLoadResponse downloadError(HrefData hrefUrl) {

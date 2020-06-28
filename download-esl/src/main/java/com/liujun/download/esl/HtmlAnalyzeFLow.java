@@ -58,7 +58,7 @@ public class HtmlAnalyzeFLow {
     FLOW.add(HtmlTextFileFlow.INSTANCE);
   }
 
-  public void downloadHtml() {
+  public void downloadHtmlLoop() {
     int sleepIndex = 0;
 
     while (!shutdownFlag.get()) {

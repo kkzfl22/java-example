@@ -1,6 +1,9 @@
-package com.liujun.element.errorfile;
+package com.liujun.schedule;
 
 import com.liujun.element.download.bean.HttpDownLoadResponse;
+import com.liujun.element.errorfile.HrefOutExceptionDetailFile;
+import com.liujun.element.errorfile.HrefOutExceptionFile;
+import com.liujun.element.errorfile.ScheduleTaskSave;
 import com.liujun.element.errorfile.bean.ScheduleDataEntity;
 import com.liujun.element.html.bean.HrefData;
 
@@ -10,9 +13,9 @@ import com.liujun.element.html.bean.HrefData;
  * @author liujun
  * @version 0.0.1
  */
-public class HrefErrorProcess implements Runnable {
+public class HrefErrorProcessTask implements Runnable {
 
-  public static final HrefErrorProcess INSTANCE = new HrefErrorProcess();
+  public static final HrefErrorProcessTask INSTANCE = new HrefErrorProcessTask();
 
   public void startRegister() {
     int rateTime = 1 * 30 * 1000;

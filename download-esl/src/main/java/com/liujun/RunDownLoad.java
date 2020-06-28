@@ -1,10 +1,14 @@
 package com.liujun;
 
+import com.liujun.common.flow.FlowServiceContext;
+import com.liujun.common.flow.FlowServiceInf;
 import com.liujun.download.esl.HtmlAnalyzeFLow;
 import com.liujun.download.hrefqueue.HtmlHrefQueueManager;
-import com.liujun.element.errorfile.HrefErrorProcess;
-import com.liujun.element.errorfile.ScheduleTaskSave;
 import com.liujun.element.html.bean.HrefData;
+import com.liujun.flow.start.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 下载程序的主入口
@@ -14,10 +18,25 @@ import com.liujun.element.html.bean.HrefData;
  */
 public class RunDownLoad {
 
+  private static final List<FlowServiceInf> FLOW = new ArrayList<>();
+
+  static {
+    // 退出流程
+    FLOW.add(ShutDownHook.INSTANCE);
+    // 保存存错误链接信息
+    FLOW.add(HrefErrorSaveTask.INSTANCE);
+    // 保存下载队列
+    FLOW.add(DownloadQueueSave.INTANCE);
+    // 保存布隆过滤器
+    FLOW.add(BloomFilterSave.INSTANCE);
+    // 启动定时保存任务
+    FLOW.add(ScheduleTimeTaskStart.INSTANCE);
+  }
+
   public static void main(String[] args) {
 
-    // 清加关闭沟子的应用程序
-    Runtime.getRuntime().addShutdownHook(new ShutdownThread());
+    // 1,加载启动流程
+    startFlow();
 
     HrefData hrefPut = new HrefData();
 
@@ -28,13 +47,17 @@ public class RunDownLoad {
 
     HtmlHrefQueueManager.INSTANCE.getHrefQueue().putHref(hrefPut);
 
-    // 定时保存任务启动
-    HrefErrorProcess.INSTANCE.startRegister();
+    HtmlAnalyzeFLow.INSTANCE.downloadHtmlLoop();
+  }
 
-    // 启动保存队列
-    Thread startThread = new Thread(new ScheduleTaskSave());
-    startThread.start();
+  public static void startFlow() {
+    FlowServiceContext context = new FlowServiceContext();
 
-    HtmlAnalyzeFLow.INSTANCE.downloadHtml();
+    for (FlowServiceInf runItem : FLOW) {
+      if (!runItem.runFlow(context)) {
+        break;
+      }
+    }
+    System.out.println("start load  finish");
   }
 }

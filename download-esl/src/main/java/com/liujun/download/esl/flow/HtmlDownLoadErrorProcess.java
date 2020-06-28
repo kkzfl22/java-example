@@ -4,7 +4,7 @@ import com.liujun.common.flow.FlowServiceContext;
 import com.liujun.common.flow.FlowServiceInf;
 import com.liujun.download.esl.constant.FlowKeyEnum;
 import com.liujun.element.download.bean.HttpDownLoadResponse;
-import com.liujun.element.errorfile.HrefErrorProcess;
+import com.liujun.schedule.HrefErrorProcessTask;
 import com.liujun.element.html.bean.HrefData;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,7 +35,7 @@ public class HtmlDownLoadErrorProcess implements FlowServiceInf {
       // 2,保存到下载错误的URL文件中
       // HrefOutExceptionDetailFile.INSTANCE.writeDownloadError(hrefUrl, response);
 
-      HrefErrorProcess.writeDownloadError(hrefUrl, response);
+      HrefErrorProcessTask.writeDownloadError(hrefUrl, response);
       return false;
     }
     log.debug("collect download response process finish ");

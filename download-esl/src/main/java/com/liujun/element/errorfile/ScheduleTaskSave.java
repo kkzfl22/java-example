@@ -49,7 +49,7 @@ public class ScheduleTaskSave implements Runnable {
 
   @Override
   public void run() {
-    // 执行定时将信息存储到文件中
+    // 检查任务是否做退出操作
     while (runFlag.get()) {
       ScheduleDataEntity scheduleDataEntity = QUEUE.poll();
       // 等待触发
