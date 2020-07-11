@@ -56,6 +56,26 @@ public class TestHtmlDownLoad {
     Assert.assertEquals(response.isFlag(), true);
   }
 
+
+  @Test
+  public void testDownloadPdf() {
+    FlowServiceContext context = new FlowServiceContext();
+
+    HrefData hrefUrl = new HrefData();
+
+    hrefUrl.setHrefText("index");
+    hrefUrl.setHrefText("index");
+    hrefUrl.setHrefUrl("https://www.rong-chang.com/pdf/newinstructorcalpro.pdf");
+    hrefUrl.getRelativePath().add("download");
+
+    context.put(FlowKeyEnum.FLOW_DOWNLOAD_ADDRESS.getKey(), hrefUrl);
+
+    HtmlDownLoad.INSTANCE.runFlow(context);
+    HttpDownLoadResponse response = context.getObject(FlowKeyEnum.FLOW_DOWNLOAD_DATA_BEAN.getKey());
+
+    Assert.assertEquals(response.isFlag(), true);
+  }
+
   @Test
   public void supperProto() throws Exception {
     SSLContext context = SSLContext.getInstance("TLS");

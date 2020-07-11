@@ -77,7 +77,7 @@ public class HttpsHtmlDownloadImpl implements HtmlDownLoadInf {
 
         // 当前文件为文本或者音频，则进行下载至内存中
         if (HttpUtils.isContextTypeText(entity.getContentType().getValue())
-            || HttpUtils.isContextTypeAudio(entity.getContentType().getValue())) {
+            || HttpUtils.isContextTypeFileStream(entity.getContentType().getValue())) {
 
           InputStream input = entity.getContent();
 

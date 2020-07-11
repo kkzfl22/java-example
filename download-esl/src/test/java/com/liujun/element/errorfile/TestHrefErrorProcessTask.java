@@ -31,7 +31,7 @@ public class TestHrefErrorProcessTask {
     HrefErrorProcessTask.INSTANCE.startRegister();
 
     // 启动保存队列
-    Thread startThread = new Thread(new ScheduleTaskSave());
+    Thread startThread = new Thread(ScheduleTaskSave.INSTANCE);
     startThread.start();
 
     HttpDownLoadResponse response = this.downloadError(hrefUrl);

@@ -41,6 +41,12 @@ public class HtmlCharsetFlow {
    * @return
    */
   public String htmlCharsetValue(byte[] htmlCode, ContentType type) {
+
+    // 防止参数为空
+    if (null == htmlCode || htmlCode.length == 0) {
+      return SymbolMsg.EMPTY;
+    }
+
     FlowServiceContext context = new FlowServiceContext();
 
     context.put(HttpCharsetFlowEnum.CHARSET_INPUT_INPUTARRAYS.getKey(), htmlCode);
@@ -54,12 +60,14 @@ public class HtmlCharsetFlow {
 
     String outHtml = context.getObject(HttpCharsetFlowEnum.CHARSET_OUTPU_HTMLCONTEXT.getKey());
 
-    // 1,找到网页开始的位置，去掉网页中的开始特殊符号
+    // 1,找到网页开始的位置，去掉网页中的开始特殊符号,
     int startIndex = 0;
-    if ((startIndex = outHtml.indexOf(SymbolMsg.LEFT_OPEN_ANGLE)) != -1) {
+    // 加空判断，防止去除符后结果为空
+    if (null != outHtml && (startIndex = outHtml.indexOf(SymbolMsg.LEFT_OPEN_ANGLE)) != -1) {
       outHtml = outHtml.substring(startIndex);
+      return outHtml;
+    } else {
+      return SymbolMsg.EMPTY;
     }
-
-    return outHtml;
   }
 }

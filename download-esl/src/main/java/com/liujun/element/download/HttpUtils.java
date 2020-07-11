@@ -1,11 +1,14 @@
 package com.liujun.element.download;
 
 import com.liujun.common.constant.SymbolMsg;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author liujun
@@ -20,10 +23,17 @@ public class HttpUtils {
   public static final String TEXT_HOME = "text/html";
 
   /** 音频文件的响应头 */
-  public static final String AUDIO_HOME = "audio/mpeg";
+  public static final Set<String> STREAM_FILE = new HashSet<>();
 
   /** 网页编码信息 */
   private static final String CHARSET_NAME = "charset=";
+
+  static {
+    // 音频文件
+    STREAM_FILE.add("audio/mpeg".toLowerCase());
+    // pdf文件
+    STREAM_FILE.add("application/pdf".toLowerCase());
+  }
 
   /**
    * 进行关闭操作
@@ -60,16 +70,22 @@ public class HttpUtils {
   }
 
   /**
-   * 检查当前网页是否为音频
+   * 检查当前网页是否为文件流
+   *
+   * <p>目前下载仅支持mp3和pdf文件
    *
    * @param contextType
    * @return
    */
-  public static boolean isContextTypeAudio(String contextType) {
+  public static boolean isContextTypeFileStream(String contextType) {
     String[] contextArrays = contextType.split(SymbolMsg.SEMICOLON);
 
     for (String context : contextArrays) {
-      if (AUDIO_HOME.equals(context)) {
+      if (StringUtils.isEmpty(context)) {
+        continue;
+      }
+      // 检查当前是否包含小写字母
+      if (STREAM_FILE.contains(context.toLowerCase())) {
         return true;
       }
     }

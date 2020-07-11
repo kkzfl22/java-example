@@ -32,6 +32,8 @@ public class HtmlTextFileFlow implements FlowServiceInf {
     FLOW.add(HtmlContextBoomFilter.INSTANCE);
     // 2,执行网页链接分析
     FLOW.add(HtmlHrefContextAnalyze.INSTANCE);
+    // 3，网页分析的链接存储
+    FLOW.add(HtmlHrefDataSave.INSTANCE);
     // 3,将网页链接放入到下载队列中
     FLOW.add(HtmlHrefPutQueue.INSTANCE);
     // 4,网页原文存储

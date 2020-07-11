@@ -49,13 +49,25 @@ public class FileUtils {
    * @param outBytes 输出的信息
    */
   public static boolean writeFile(String path, String fileName, byte[] outBytes) {
+    // 不采用追加模式进行文件写入
+    return writeFile(path, fileName, outBytes, false);
+  }
+
+  /**
+   * 文件写入方法
+   *
+   * @param path 文件路径
+   * @param fileName 文件名称
+   * @param outBytes 输出的信息
+   */
+  public static boolean writeFile(String path, String fileName, byte[] outBytes, boolean append) {
     boolean mkRsp = dirCheckAndMkdirs(path);
 
     if (mkRsp) {
       FileOutputStream outputStream = null;
 
       try {
-        outputStream = new FileOutputStream(path + SymbolMsg.PATH + fileName);
+        outputStream = new FileOutputStream(path + SymbolMsg.PATH + fileName, append);
         outputStream.write(outBytes);
         return true;
       } catch (FileNotFoundException e) {

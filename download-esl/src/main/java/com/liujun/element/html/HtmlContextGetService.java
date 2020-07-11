@@ -65,14 +65,13 @@ public class HtmlContextGetService {
 
     long start = System.currentTimeMillis();
 
-
-
     HtmlData outData = this.analyzeHtml(dataHtml, currHtmlHref);
 
     long end = System.currentTimeMillis();
     long sumValue = end - start;
 
-    logger.info("analyze url {} html  {} use time {} ", currHtmlHref, dataHtml, sumValue);
+    logger.info(
+        "analyze url {} html  length {} use time {} ", currHtmlHref, dataHtml.length(), sumValue);
 
     return outData;
   }

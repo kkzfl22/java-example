@@ -21,7 +21,7 @@ public class ScheduleTimeTaskStart implements FlowServiceInf {
 
     log.info("start flow time task start ");
     // 启动保存队列
-    Thread startThread = new Thread(new ScheduleTaskSave());
+    Thread startThread = new Thread(ScheduleTaskSave.INSTANCE);
     startThread.start();
     log.info("start flow time task finish ");
     return true;

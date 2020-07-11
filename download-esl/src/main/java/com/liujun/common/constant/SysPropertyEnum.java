@@ -30,6 +30,9 @@ public enum SysPropertyEnum {
   /** 存储源文件的后缀名 */
   HTML_SRC_SUFFIX_NAME("html.src.suffix.name"),
 
+  /** 分析链接后缀地址 */
+  HTML_HREF_SUFFIX_NAME("html.analyze.href.suffix.name"),
+
   /** 存储转码后的文件后缀名 */
   HTML_PROC_SUFFIX_NAME("html.proc.suffix.name"),
 

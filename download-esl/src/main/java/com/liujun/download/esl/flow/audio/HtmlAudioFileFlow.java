@@ -33,7 +33,7 @@ public class HtmlAudioFileFlow implements FlowServiceInf {
 
     HttpDownLoadResponse htmlContext =
         context.getObject(FlowKeyEnum.FLOW_DOWNLOAD_DATA_BEAN.getKey());
-    if (HttpUtils.AUDIO_HOME.equals(htmlContext.getData().getContextType().getMimeType())) {
+    if (HttpUtils.STREAM_FILE.contains(htmlContext.getData().getContextType().getMimeType())) {
       log.debug("collect download  audio save start ");
 
       HrefData hrefUrl = context.getObject(FlowKeyEnum.FLOW_DOWNLOAD_ADDRESS.getKey());

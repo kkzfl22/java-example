@@ -31,7 +31,7 @@ public class TestHtmlAnalyzeFLow {
     HrefErrorProcessTask.INSTANCE.startRegister();
 
     // 启动保存队列
-    Thread startThread = new Thread(new ScheduleTaskSave());
+    Thread startThread = new Thread(ScheduleTaskSave.INSTANCE);
     startThread.start();
 
     HtmlAnalyzeFLow.INSTANCE.downloadHtmlLoop();
@@ -40,6 +40,16 @@ public class TestHtmlAnalyzeFLow {
   @Test
   public void runDown() {
     runDownOne("https://www.rong-chang.com/resources/esp.htm", "esp");
+  }
+
+  @Test
+  public void runDownke001() {
+    runDownOne("https://www.eslfast.com/kidsenglish/ke/ke001.htm", "ke001");
+  }
+
+  @Test
+  public void runDownPdf() {
+    runDownOne("https://www.rong-chang.com/pdf/newinstructorcalpro.pdf", "newinstructorcalpro");
   }
 
   private void runDownOne(String url, String name) {

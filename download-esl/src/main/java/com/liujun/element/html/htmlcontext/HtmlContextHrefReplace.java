@@ -95,11 +95,6 @@ public class HtmlContextHrefReplace implements FlowServiceInf {
 
   public static Map<String, String> getReplateMap() {
     Map<String, String> dataReplate = new HashMap<>();
-    dataReplate.put(">Vocabulary</a>", "></a>");
-    dataReplate.put(">Cloze</a>", "></a>");
-    dataReplate.put(">Sentences</a>", "></a>");
-    dataReplate.put(">Dictation</a>", "></a>");
-    dataReplate.put(">MENU</a>", "></a>");
     dataReplate.put("<<script", "<script");
     return dataReplate;
   }

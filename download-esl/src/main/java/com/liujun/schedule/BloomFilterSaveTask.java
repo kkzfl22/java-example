@@ -16,12 +16,12 @@ public class BloomFilterSaveTask implements Runnable {
   public static final BloomFilterSaveTask INSTANCE = new BloomFilterSaveTask();
 
   public void startRegister() {
-    // 每5分钟定时执行布隆过滤器的保存操作
-    int rateTime = 5 * 30 * 1000;
+    // 每2分钟定时执行布隆过滤器的保存操作
+    int rateTime = 2 * 60 * 1000;
     ScheduleDataEntity scheduleTaskBloom = new ScheduleDataEntity();
     scheduleTaskBloom.setRunTime(System.currentTimeMillis() + rateTime);
     scheduleTaskBloom.setRateTime(rateTime);
-    scheduleTaskBloom.setRunObject(this);
+    scheduleTaskBloom.setRunObject(INSTANCE);
     ScheduleTaskSave.registerSchedule(scheduleTaskBloom);
   }
 

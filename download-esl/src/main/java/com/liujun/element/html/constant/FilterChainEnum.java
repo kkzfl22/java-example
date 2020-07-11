@@ -11,6 +11,9 @@ public enum FilterChainEnum {
 
   /** 原始待过滤的字符串信息 */
   FILTER_SRC("src_chars"),
+
+  /** 字符串数组 */
+  FILTER_SRC_CHAR_ARRAY("src_chars_char_array"),
   ;
 
   FilterChainEnum(String key) {

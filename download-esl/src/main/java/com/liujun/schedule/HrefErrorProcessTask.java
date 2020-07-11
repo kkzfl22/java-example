@@ -18,11 +18,11 @@ public class HrefErrorProcessTask implements Runnable {
   public static final HrefErrorProcessTask INSTANCE = new HrefErrorProcessTask();
 
   public void startRegister() {
-    int rateTime = 1 * 30 * 1000;
+    int rateTime = 2 * 60 * 1000;
     ScheduleDataEntity scheduleTask = new ScheduleDataEntity();
     scheduleTask.setRunTime(System.currentTimeMillis() + rateTime);
     scheduleTask.setRateTime(rateTime);
-    scheduleTask.setRunObject(this);
+    scheduleTask.setRunObject(INSTANCE);
     ScheduleTaskSave.registerSchedule(scheduleTask);
   }
 
@@ -48,9 +48,12 @@ public class HrefErrorProcessTask implements Runnable {
   }
 
   public void close() {
+    System.out.println("href error process close start ");
     // 流关闭
     HrefOutExceptionFile.INSTANCE.close();
     // 流关闭
     HrefOutExceptionDetailFile.INSTANCE.close();
+
+    System.out.println("href error process close finish ");
   }
 }

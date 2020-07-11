@@ -34,9 +34,11 @@ public class HrefOutFile {
 
     OutputStream output = null;
     try {
+      // 链接记录采用追加模式，以防止冲掉之前的数据
+      output = new FileOutputStream(outPath, true);
+      String outDataLine = hrefUrl.getHrefUrl() + SymbolMsg.LINE;
 
-      output = new FileOutputStream(outPath);
-      byte[] outData = hrefUrl.getHrefUrl().getBytes();
+      byte[] outData = outDataLine.getBytes();
       // 将数据写入文件中
       output.write(outData);
     } catch (FileNotFoundException e) {

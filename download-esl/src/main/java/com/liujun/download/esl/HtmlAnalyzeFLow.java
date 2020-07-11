@@ -1,12 +1,10 @@
 package com.liujun.download.esl;
 
+import com.liujun.ShutdownThread;
 import com.liujun.common.flow.FlowServiceContext;
 import com.liujun.common.flow.FlowServiceInf;
 import com.liujun.download.esl.constant.FlowKeyEnum;
-import com.liujun.download.esl.flow.HtmlDownLoad;
-import com.liujun.download.esl.flow.HtmlDownLoadErrorProcess;
-import com.liujun.download.esl.flow.HtmlDownLoadHrefSave;
-import com.liujun.download.esl.flow.HtmlUrlBoomFilter;
+import com.liujun.download.esl.flow.*;
 import com.liujun.download.esl.flow.audio.HtmlAudioFileFlow;
 import com.liujun.download.esl.flow.text.HtmlTextFileFlow;
 import com.liujun.download.hrefqueue.HtmlHrefQueueManager;
@@ -44,17 +42,19 @@ public class HtmlAnalyzeFLow {
   private static final List<FlowServiceInf> FLOW = new ArrayList<>(8);
 
   static {
-    // 1，下载网页操作
-    FLOW.add(HtmlDownLoad.INSTANCE);
-    // 检查网页下载的结果，如果成功，则继续失败，则记录下失败信息
-    FLOW.add(HtmlDownLoadErrorProcess.INSTANCE);
-    // 2，进行网页链接的判重操作
+    // 1,首先进行网页链接的判重操作
     FLOW.add(HtmlUrlBoomFilter.INSTANCE);
-    // 3，将当前的链接信息记录到文件
+    // 2，下载网页操作
+    FLOW.add(HtmlDownLoad.INSTANCE);
+    // 3,检查网页下载的结果，如果成功，则继续失败，则记录下失败信息
+    FLOW.add(HtmlDownLoadErrorProcess.INSTANCE);
+    // 4，将当前的链接信息记录到文件
     FLOW.add(HtmlDownLoadHrefSave.INSTANCE);
-    // 4,音频文件处理流程，进行音频文件的存储
+    // 将文件加入到已经已经下载的布隆过滤器中
+    FLOW.add(HtmlUrlBoomFilterAdd.INSTANCE);
+    // 5,音频文件处理流程，进行音频文件的存储
     FLOW.add(HtmlAudioFileFlow.INSTANCE);
-    // 5，网页文本文件流程，进行网页文件的流程处理
+    // 6，网页文本文件流程，进行网页文件的流程处理
     FLOW.add(HtmlTextFileFlow.INSTANCE);
   }
 
@@ -74,6 +74,7 @@ public class HtmlAnalyzeFLow {
           e.printStackTrace();
         }
         sleepIndex++;
+        System.out.println("curr not download,exit : " + sleepIndex);
 
         // 当下载完成后进行退出操作
         if (sleepIndex > MAX_SLEEP) {
@@ -88,6 +89,9 @@ public class HtmlAnalyzeFLow {
 
     // 设置运行状态为false
     runFlag.set(false);
+
+    // 执行关闭流程
+    ShutdownThread.INSTANCE.runShutdown();
   }
 
   public boolean downloadHtmlOne() {

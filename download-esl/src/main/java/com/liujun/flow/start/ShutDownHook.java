@@ -20,7 +20,7 @@ public class ShutDownHook implements FlowServiceInf {
   public boolean runFlow(FlowServiceContext context) {
     log.info("start flow shutdown hook start");
     // 清加关闭沟子的应用程序
-    Runtime.getRuntime().addShutdownHook(new ShutdownThread());
+    Runtime.getRuntime().addShutdownHook(ShutdownThread.INSTANCE);
     log.info("start flow shutdown hook finish");
     return true;
   }

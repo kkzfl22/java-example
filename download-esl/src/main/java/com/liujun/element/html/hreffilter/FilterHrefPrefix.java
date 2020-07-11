@@ -27,11 +27,12 @@ public class FilterHrefPrefix implements FlowServiceInf {
   }
 
   @Override
-  public boolean runFlow(FlowServiceContext context)  {
+  public boolean runFlow(FlowServiceContext context) {
 
     String src = context.getObject(FilterChainEnum.FILTER_SRC.getKey());
 
     for (String code : FILTER_PREFIX) {
+      // 在检查时，需要进行不区分大小写的匹配
       if (src.startsWith(code)) {
         return true;
       }

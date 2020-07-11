@@ -5,6 +5,7 @@ import com.liujun.download.esl.constant.FlowKeyEnum;
 import com.liujun.download.esl.flow.HtmlDownLoad;
 import com.liujun.element.download.bean.HttpDownLoadResponse;
 import com.liujun.element.html.bean.HrefData;
+import com.liujun.schedule.HrefErrorProcessTask;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -27,12 +28,18 @@ public class TestHrefOutExceptionDetailFile {
     hrefUrl.getRelativePath().add("download");
 
     HttpDownLoadResponse response = this.downloadError(hrefUrl);
-    HrefOutExceptionDetailFile.INSTANCE.writeDownloadError(hrefUrl, response);
+    HrefErrorProcessTask.INSTANCE.writeDownloadError(hrefUrl, response);
 
     response = this.downloadError(hrefUrl);
-    HrefOutExceptionDetailFile.INSTANCE.writeDownloadError(hrefUrl, response);
+    HrefErrorProcessTask.INSTANCE.writeDownloadError(hrefUrl, response);
     response = this.downloadError(hrefUrl);
-    HrefOutExceptionDetailFile.INSTANCE.writeDownloadError(hrefUrl, response);
+    HrefErrorProcessTask.INSTANCE.writeDownloadError(hrefUrl, response);
+
+    //将数据刷新到文件是
+    HrefErrorProcessTask.INSTANCE.run();
+
+
+    HrefErrorProcessTask.INSTANCE.close();
   }
 
   private HttpDownLoadResponse downloadError(HrefData hrefUrl) {

@@ -66,6 +66,8 @@ public class HtmlTagCleanProcess {
     FLOW_FILTER.add(FilterOneSymbol.INSTANCE);
     // 进行多种组合的过滤操作
     FLOW_FILTER.add(FilterMultSymbol.INSTANCE);
+    //特定的字符过滤
+    FLOW_FILTER.add(HtmlContextFilterESL.INSTANCE);
   }
 
   /** 日志 */

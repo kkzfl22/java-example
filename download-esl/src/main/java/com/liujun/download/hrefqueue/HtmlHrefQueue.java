@@ -70,7 +70,7 @@ public class HtmlHrefQueue implements Serializable {
     while (true) {
       getIndexValue = getIndex.get();
 
-      if (getIndexValue > putIndex.get()) {
+      if (getIndexValue >= putIndex.get()) {
         return null;
       }
 

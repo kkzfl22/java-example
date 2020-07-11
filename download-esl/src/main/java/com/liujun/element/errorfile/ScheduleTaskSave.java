@@ -21,6 +21,9 @@ public class ScheduleTaskSave implements Runnable {
 
   private static AtomicBoolean stopFlag = new AtomicBoolean(false);
 
+  /** 实例对象 */
+  public static final ScheduleTaskSave INSTANCE = new ScheduleTaskSave();
+
   /**
    * 注册监控,需要手动设置监控时间
    *
@@ -33,15 +36,19 @@ public class ScheduleTaskSave implements Runnable {
   }
 
   public static void shutdown() {
+    System.out.println("schedule task shutdown start ");
     runFlag.set(false);
+    int runIndex = 0;
     // 检查当前是否已经停止，未停止则等2秒后再继续
     while (!stopFlag.get()) {
       try {
-        Thread.sleep(2000L);
+        Thread.sleep(5000L);
+        runIndex++;
       } catch (InterruptedException e) {
         e.printStackTrace();
         log.error("shutdown sleep InterruptedException:", e);
       }
+      System.out.println("schedule task shutdown sleep 5000 , num " + runIndex);
     }
 
     System.out.println("schedule shutdown finish");
@@ -52,15 +59,28 @@ public class ScheduleTaskSave implements Runnable {
     // 检查任务是否做退出操作
     while (runFlag.get()) {
       ScheduleDataEntity scheduleDataEntity = QUEUE.poll();
-      // 等待触发
-      threadWait(scheduleDataEntity.getRunTime());
-      // 任务执行
-      scheduleDataEntity.getRunObject().run();
-
-      // 更新更新时间
-      ScheduleDataEntity nextData = runNextTime(scheduleDataEntity);
-      // 注册加入队列
-      registerSchedule(nextData);
+      if (null != scheduleDataEntity) {
+        try {
+          // 等待触发
+          threadWait(scheduleDataEntity.getRunTime());
+          // 任务执行
+          scheduleDataEntity.getRunObject().run();
+          // 更新更新时间
+          ScheduleDataEntity nextData = runNextTime(scheduleDataEntity);
+          // 注册加入队列
+          registerSchedule(nextData);
+        } catch (Exception e) {
+          e.printStackTrace();
+          log.error("run schedule exception:", e);
+        }
+      } else {
+        try {
+          log.info("curr schedule is null run wait ");
+          Thread.sleep(2000L);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
     }
     stopFlag.set(true);
   }

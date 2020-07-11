@@ -20,6 +20,13 @@ public class TestHttpsDownload {
   }
 
   @Test
+  public void testDownloadHtmlPdf() throws Exception {
+    String urlAddress = "https://www.rong-chang.com/images/li_wen_impossible_puzzles.pdf";
+    HttpDownLoadResponse audio = HttpsHtmlDownloadImpl.INSTNACE.downloadHtml(urlAddress, client);
+    System.out.println(audio);
+  }
+
+  @Test
   public void testDownloadHtml2() throws Exception {
     String urlAddress = "https://www.rong-chang.com/resources/esp.htm";
     HttpDownLoadResponse audio = HttpsHtmlDownloadImpl.INSTNACE.downloadHtml(urlAddress, client);

@@ -4,8 +4,12 @@ import com.liujun.common.flow.FlowServiceContext;
 import com.liujun.common.flow.FlowServiceInf;
 import com.liujun.element.html.constant.FilterChainEnum;
 import com.liujun.element.html.hreffilter.*;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 进行网页链接
@@ -23,19 +27,19 @@ public class HtmlHrefFilter {
   public static final HtmlHrefFilter INSTANCE = new HtmlHrefFilter();
 
   /** 进行过滤任务的操作 */
-  private static final FlowServiceInf[] FLOW = new FlowServiceInf[5];
+  private static final List<FlowServiceInf> FLOW = new ArrayList<>();
 
   static {
     // 进行整个地址的过滤操作
-    FLOW[0] = FilterHrefAll.INSTANCE;
+    FLOW.add(FilterHrefAll.INSTANCE);
     // 1，进行前缀过滤操作
-    FLOW[1] = FilterHrefPrefix.INSTANCE;
+    FLOW.add(FilterHrefPrefix.INSTANCE);
     // 2,进行后缀的过滤操作
-    FLOW[2] = FilterHrefSuffix.INSTANCE;
+    FLOW.add(FilterHrefSuffix.INSTANCE);
     // 进行内容检查过滤
-    FLOW[3] = FilterHrefContext.INSTANCE;
+    FLOW.add(FilterHrefContext.INSTANCE);
     // 3,进行email过滤操作
-    FLOW[4] = FilterHrefEmail.INSTANCE;
+    FLOW.add(FilterHrefEmail.INSTANCE);
   }
 
   /**
@@ -46,10 +50,15 @@ public class HtmlHrefFilter {
    */
   public boolean filterCheck(String src) {
 
+    if (StringUtils.isEmpty(src)) {
+      return true;
+    }
+
     boolean checkRsp = false;
 
     FlowServiceContext context = new FlowServiceContext();
-    context.put(FilterChainEnum.FILTER_SRC.getKey(), src);
+    // 所有都使用小写进行匹配
+    context.put(FilterChainEnum.FILTER_SRC.getKey(), src.toLowerCase());
 
     try {
       for (FlowServiceInf flowItem : FLOW) {
