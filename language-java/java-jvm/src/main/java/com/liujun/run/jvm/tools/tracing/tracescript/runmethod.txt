@@ -1,0 +1,23 @@
+操作方法
+1,运行主方法
+打开窗口1
+java  -cp java-jvm-1.0-SNAPSHOT.jar com.liujun.run.jvm.tools.tracing.TraceRunMain
+
+2，运行监控程序
+打开窗口2
+1),进入java-jvm-1.0-SNAPSHOT.jar所有的目录
+cd D:\java\workspace\selfwork\java-example\language-java\java-jvm\target
+
+2),将TracingMethodAnyTypes.java拷贝到
+D:\java\workspace\selfwork\java-example\language-java\java-jvm\target目录下
+
+3),去掉头上的包的定义
+package com.liujun.run.jvm.tools.tracing.tracescript;
+
+
+4),获取当前的进程号
+jps -l
+
+将运行btrace程序
+btrace需要配制环境变量
+btrace  -cp java-jvm-1.0-SNAPSHOT.jar -v -u 13584 TracingMethodAnyTypes.java

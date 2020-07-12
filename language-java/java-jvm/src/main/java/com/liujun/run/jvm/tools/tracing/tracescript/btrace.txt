@@ -1,0 +1,170 @@
+location = @Location(Kind.RETURN)
+    ARRAY_GET, 数组的索引操作
+    ARRAY_SET, 数组的索引设置
+    CALL,      方法调用
+    CATCH,     捕获异常
+    CHECKCAST, 条件检查
+    ENTRY,     入口，默认值
+    ERROR,     错误
+    FIELD_GET, 属性获取
+    FIELD_SET, 属性设置
+    INSTANCEOF, 类型判断
+    LINE,     行号
+    NEW,      初始化
+    NEWARRAY, 初始化数组
+    RETURN,   返回
+    SYNC_ENTRY, 同步进入
+    SYNC_EXIT,  同步退出
+    THROW;   异常
+
+
+
+
+@OnMethod
+used to specify target class(es), target method(s) and "location(s)" within the method(s)
+
+@OnMethod(clazz=<cname_spec>[, method=<mname_spec>]? [, type=<signature>]? [, location=<location_spec>]?)
+
+cname_spec = <class_name> | +<class_name> | /regex/
+class_name is a fully qualified class name
++class_name is a fully qualified class name prepended with +; means all subclasses and implementors of the prepended class name
+/regex/ is a standard regular expression used to identify the class names
+mname_spec = <method_name> | /regex/
+method_name is a simple method name (no signature or return type)
+signature = <return_type> ((arg_type(,arg_type)*)?
+return_type is the methods return type as written in java (eg. void, java.lang.String)
+arg_type is the argument type as written in java
+An action method annotated by this annotation is called when the matching method(s) reaches specified the location. In OnMethod annotation, traced class name is specified by "clazz" property and traced method is specified by "method" property. "clazz" may be a fully qualified class name (like java.awt.Component or a regular expression specified within two forward slashes. Refer to the samples NewComponent.java and Classload.java.
+
+The regular expression can match zero or more classes in which case all matching classes are instrumented. For example /java\.awt\..+/ matches all classes in java.awt package. Also, method name can be a regular expression as well - matching zero or more methods. Refer to the sample MultiClass.java.
+
+There is another way to abstractly specify traced class(es) and method(s). Traced classes and methods may be specified by annotation. For example, if the "clazz" attribute is specified as @javax.jws.WebService BTrace will instrument all classes that are annotated by the WebService annotation. Similarly, method level annotations may be used to specify methods abstractly. Refer to the sample WebServiceTracker.java.
+
+It is also possible to combine regular expressions with annotations - like @/com\.acme\..+/ matches any class that is annotated by any annotation that matches the given regular expression.
+
+It is possible to match multiple classes by specifying super type. i.e., match all classes that are subtypes of a given super type. +java.lang.Runnable matches all classes implementing java.lang.Runnable interface. Refer to the sample SubtypeTracer.java.
+
+@OnTimer
+用于跟踪定时任务
+used to specify tracing actions that have to run periodically once every N milliseconds
+用于指定每N毫秒周期性运行一次的跟踪操作
+
+@OnTimer([[value=]?<value>]?)
+
+value specifies the time period
+Time period is specified as long "value" property of this annotation. Refer to the sample Histogram.java
+
+@OnError
+used to specify actions that are run whenever any exception is thrown by tracing actions of some other probe
+
+BTrace method annotated by this annotation is called when any exception is thrown by any of the other BTrace action methods in the same BTrace class.
+  当trace代码抛异常或者错误时，该注解的方法会被执行.如果同一个trace脚本中其他方法抛异常,该注解方法也会被执行
+
+@OnExit
+used to specify actions that are run when BTrace code calls "exit(int)" built-in function to finish the tracing "session"
+
+Refer to the sample ProbeExit.java.
+
+@OnEvent
+
+used to associate tracing methods with "external" events send by BTrace client.
+
+@OnEvent([[value=]?<event_name>]?)
+
+event_name is the name of the event this handler will respond to
+BTrace methods annotated by this annotation are called when BTrace client sends an "event".
+Client may send an event based on some form of user request to send (like pressing Ctrl-C or a GUI menu).
+String value may used as the name of the event. This way certain tracing actions can be executed whenever an external event "fires".
+
+As of now, the command line BTrace client sends "events" whenever use presses Ctrl-C (SIGINT). On SIGINT,
+a console menu is shown to send an event or exit the client [which is the default for SIGINT]. Refer to the sample HistoOnEvent.java
+
+指定事件名称的事件的示例代码，(通过Ctrl+C 选择选项3 并输入相同的事件名称即可触发)：
+Please enter your option:
+        1. exit
+        2. send an event
+        3. send a named event
+        4. flush console output
+
+
+@OnLowMemory
+used to trace memory threshold exceed event
+
+See sample MemAlerter.java
+
+@OnProbe
+used to specify to avoid using implementation internal classes in BTrace scripts
+用于指定避免在BTrace脚本中使用实现内部类
+
+@OnProbe(namespace=<namespace_name>, name=<probe_name>)
+
+namespace_name is an arbitrary namespace name in the form of a java package
+probe_name is an arbitrary probe name
+@OnProbe probe specifications are mapped to one or more @OnMethod specifications by the BTrace VM agent. Currently, this mapping is done using a XML probe descriptor file [accessed by the BTrace agent]. Refer to the sample SocketTracker1.java and associated probe descriptor file java.net.socket.xml.
+
+When running this sample, this xml file needs to be copied in the directory where the target JVM runs (or fix probeDescPath option in btracer.bat to point to whereever the .xml file is).
+
+@Sampled
+enables sampling for the annotated handler. To be used in conjunction with @OnMethod annotation.
+为带注解的处理程序启用抽样。与@OnMethod注解一起使用。
+@Sampled([kind=<sampler_kind>[,mean=<number>])
+
+<sampler_kind> is one of Sampler.Const, Sampler.Adaptive and Sampler.None
+Argument Annotations
+@ProbeClassName
+used to mark the handler method argument taking the name of the class of the currently intercepted method. Applicable only in methods annotated by @OnMethod
+
+@ProbeMethodName
+used to mark the handler method argument taking the name of the currently intercepted method. Applicable only in methods annotated by @OnMethod
+表示监听方法的名词，与 @OnMethod 注解中的 method 属性中的值是一致的。
+
+@ProbeMethodName([fqn=(true|false)]?)
+
+fqn signals that the Full Qualified Name should be used instead of a simple name; defaults to false
+ 表示监听方法的名词，与 @OnMethod 注解中的 method 属性中的值是一致的。
+
+@Self
+denotes an argument used to access the enclosing instance of the currently intercepted method.
+Using this annotation for a handler argument will effectively filter out all the otherwise matching static method (there is no instance to be used)
+表示用于访问当前截获方法的封闭实例的对象。
+
+@Return
+an argument with this annotation will contain the return value of the currently intercepted method. Applicable only for location=@Location(Kind.RETURN) and will cause only methods returning non-void values to be intercepted
+
+@Duration
+the method execution duration will be provided in an argument annotated by @Duration.
+ Applicable only for location=@Location(Kind.RETURN) and long arguments
+ 表示方法的持续时间，一般用于方法耗时，在性能分析以及慢执行方面用的比较多，单位为纳秒。
+
+@TargetInstance
+this annotation will provide access to the instance the currently intercepted method is being invoked on (similar to @Self)
+ but targets method calls or field access Applicable for
+  location=@Location([Kind.CALL|Kind.FIELD_GET|Kind.FIELD_SET) and non-static method calls or field access
+
+@TargetMethodOrField
+this annotation will provide access to the name of a method being called or a field being accessed (similar to @ProbeMethodName) Applicable for location=@Location([Kind.CALL|Kind.FIELD_GET|Kind.FIELD_SET)
+
+@TargetMethodOrField([fqn=(true|false)]?)
+
+fqn signals that the Full Qualified Name should be used instead of a simple name; defaults to false
+
+
+
+BTraceUtils常用方法介绍
+获取当前线程 BTraceUtils.currentThread()
+获取当前线程名称 BTraceUtis.Threads.name(BTraceUtils.currentThread())
+打印当前线程jstack BTraceUtils.Threads.jstack()
+获取当前时间 timestamp()
+获取当前时间 毫秒值  millis()
+创建StringBuilder newStringBuilder()
+追加字符串append()
+Appendable builder=Strings.newStringBuilder();
+Strings.append(builder,"当前时间：");
+Strings.append(builder,timestamp());
+println(str(builder));
+字符串拼接 strcat("str1","str2")  concat("str1","str2")
+字符串比较 strcmp("str1","str2")
+截取字符串 substr(“str",0,1)
+获取字符串长度  strlen("str")
+字符串是否匹配指定的正则表达式 matches(regex, input)
+将对象转换为字符串 str()
