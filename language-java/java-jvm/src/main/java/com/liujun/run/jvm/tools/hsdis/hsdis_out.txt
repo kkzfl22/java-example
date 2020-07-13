@@ -1,0 +1,234 @@
+CompilerOracle: unrecognized line
+  "dotinline *Bar sum"
+CompilerOracle: compileonly *Bar.sum
+Loaded disassembler from C:\java\jdk8\jdk1.8.0_241\jre\bin\server\hsdis-amd64.dll
+Decoding compiled method 0x0000000003244c10:
+Code:
+Argument 0 is unknown.RIP: 0x3244d60 Code size: 0x00000170
+[Disassembling for mach='amd64']
+[Entry Point]
+[Constants]
+  # {method} {0x000000001c392ad0} 'sum' '(I)I' in 'com/liujun/run/jvm/tools/hsdis/Bar'
+  # this:     rdx:rdx   = 'com/liujun/run/jvm/tools/hsdis/Bar'
+  # parm0:    r8        = int
+  #           [sp+0x40]  (sp of caller)
+  0x0000000003244d60: mov     r10d,dword ptr [rdx+8h]
+  0x0000000003244d64: shl     r10,3h
+  0x0000000003244d68: cmp     r10,rax
+  0x0000000003244d6b: jne     3185f60h          ;   {runtime_call}
+  0x0000000003244d71: nop     word ptr [rax+rax+0h]
+  0x0000000003244d7c: nop
+[Verified Entry Point]
+  0x0000000003244d80: mov     dword ptr [rsp+0ffffffffffffa000h],eax
+  0x0000000003244d87: push    rbp
+  0x0000000003244d88: sub     rsp,30h
+  0x0000000003244d8c: mov     rax,1c392d90h     ;   {metadata(method data for {method} {0x000000001c392ad0} 'sum' '(I)I' in 'com/liujun/run/jvm/tools/hsdis/Bar')}
+  0x0000000003244d96: mov     esi,dword ptr [rax+0dch]
+  0x0000000003244d9c: add     esi,8h
+  0x0000000003244d9f: mov     dword ptr [rax+0dch],esi
+  0x0000000003244da5: mov     rax,1c392ac8h     ;   {metadata({method} {0x000000001c392ad0} 'sum' '(I)I' in 'com/liujun/run/jvm/tools/hsdis/Bar')}
+  0x0000000003244daf: and     esi,0h
+  0x0000000003244db2: cmp     esi,0h
+  0x0000000003244db5: je      3244ddch          ;*aload_0
+                                                ; - com.liujun.run.jvm.tools.hsdis.Bar::sum@0 (line 22)
+
+  0x0000000003244dbb: mov     eax,dword ptr [rdx+0ch]  ;*getfield a
+                                                ; - com.liujun.run.jvm.tools.hsdis.Bar::sum@1 (line 22)
+
+  0x0000000003244dbe: mov     rsi,76c667700h    ;   {oop(a 'java/lang/Class' = 'com/liujun/run/jvm/tools/hsdis/Bar')}
+  0x0000000003244dc8: mov     esi,dword ptr [rsi+68h]  ;*getstatic b
+                                                ; - com.liujun.run.jvm.tools.hsdis.Bar::sum@4 (line 22)
+
+  0x0000000003244dcb: add     eax,esi
+  0x0000000003244dcd: add     eax,r8d
+  0x0000000003244dd0: add     rsp,30h
+  0x0000000003244dd4: pop     rbp
+  0x0000000003244dd5: test    dword ptr [9f0100h],eax  ;   {poll_return}
+  0x0000000003244ddb: ret
+  0x0000000003244ddc: mov     qword ptr [rsp+8h],rax
+  0x0000000003244de1: mov     qword ptr [rsp],0ffffffffffffffffh
+  0x0000000003244de9: call    3242520h          ; OopMap{rdx=Oop off=142}
+                                                ;*synchronization entry
+                                                ; - com.liujun.run.jvm.tools.hsdis.Bar::sum@-1 (line 22)
+                                                ;   {runtime_call}
+  0x0000000003244dee: jmp     3244dbbh
+  0x0000000003244df0: nop
+  0x0000000003244df1: nop
+  0x0000000003244df2: mov     rax,qword ptr [r15+2a8h]
+  0x0000000003244df9: mov     r10,0h
+  0x0000000003244e03: mov     qword ptr [r15+2a8h],r10
+  0x0000000003244e0a: mov     r10,0h
+  0x0000000003244e14: mov     qword ptr [r15+2b0h],r10
+  0x0000000003244e1b: add     rsp,30h
+  0x0000000003244e1f: pop     rbp
+  0x0000000003244e20: jmp     31b0560h          ;   {runtime_call}
+  0x0000000003244e25: hlt
+  0x0000000003244e26: hlt
+  0x0000000003244e27: hlt
+  0x0000000003244e28: hlt
+  0x0000000003244e29: hlt
+  0x0000000003244e2a: hlt
+  0x0000000003244e2b: hlt
+  0x0000000003244e2c: hlt
+  0x0000000003244e2d: hlt
+  0x0000000003244e2e: hlt
+  0x0000000003244e2f: hlt
+  0x0000000003244e30: hlt
+  0x0000000003244e31: hlt
+  0x0000000003244e32: hlt
+  0x0000000003244e33: hlt
+  0x0000000003244e34: hlt
+  0x0000000003244e35: hlt
+  0x0000000003244e36: hlt
+  0x0000000003244e37: hlt
+  0x0000000003244e38: hlt
+  0x0000000003244e39: hlt
+  0x0000000003244e3a: hlt
+  0x0000000003244e3b: hlt
+  0x0000000003244e3c: hlt
+  0x0000000003244e3d: hlt
+  0x0000000003244e3e: hlt
+  0x0000000003244e3f: hlt
+[Exception Handler]
+[Stub Code]
+  0x0000000003244e40: call    323fae0h          ;   {no_reloc}
+  0x0000000003244e45: mov     qword ptr [rsp+0ffffffffffffffd8h],rsp
+  0x0000000003244e4a: sub     rsp,80h
+  0x0000000003244e51: mov     qword ptr [rsp+78h],rax
+  0x0000000003244e56: mov     qword ptr [rsp+70h],rcx
+  0x0000000003244e5b: mov     qword ptr [rsp+68h],rdx
+  0x0000000003244e60: mov     qword ptr [rsp+60h],rbx
+  0x0000000003244e65: mov     qword ptr [rsp+50h],rbp
+  0x0000000003244e6a: mov     qword ptr [rsp+48h],rsi
+  0x0000000003244e6f: mov     qword ptr [rsp+40h],rdi
+  0x0000000003244e74: mov     qword ptr [rsp+38h],r8
+  0x0000000003244e79: mov     qword ptr [rsp+30h],r9
+  0x0000000003244e7e: mov     qword ptr [rsp+28h],r10
+  0x0000000003244e83: mov     qword ptr [rsp+20h],r11
+  0x0000000003244e88: mov     qword ptr [rsp+18h],r12
+  0x0000000003244e8d: mov     qword ptr [rsp+10h],r13
+  0x0000000003244e92: mov     qword ptr [rsp+8h],r14
+  0x0000000003244e97: mov     qword ptr [rsp],r15
+  0x0000000003244e9b: mov     rcx,567e5f18h     ;   {external_word}
+  0x0000000003244ea5: mov     rdx,3244e45h      ;   {internal_word}
+  0x0000000003244eaf: mov     r8,rsp
+  0x0000000003244eb2: and     rsp,0fffffffffffffff0h
+  0x0000000003244eb6: call    56498230h         ;   {runtime_call}
+  0x0000000003244ebb: hlt
+[Deopt Handler Code]
+  0x0000000003244ebc: mov     r10,3244ebch      ;   {section_word}
+  0x0000000003244ec6: push    r10
+  0x0000000003244ec8: jmp     3187600h          ;   {runtime_call}
+  0x0000000003244ecd: hlt
+  0x0000000003244ece: hlt
+  0x0000000003244ecf: hlt
+Decoding compiled method 0x0000000003247a10:
+Code:
+Argument 0 is unknown.RIP: 0x3247b60 Code size: 0x00000130
+[Entry Point]
+[Constants]
+  # {method} {0x000000001c392ad0} 'sum' '(I)I' in 'com/liujun/run/jvm/tools/hsdis/Bar'
+  # this:     rdx:rdx   = 'com/liujun/run/jvm/tools/hsdis/Bar'
+  # parm0:    r8        = int
+  #           [sp+0x40]  (sp of caller)
+  0x0000000003247b60: mov     r10d,dword ptr [rdx+8h]
+  0x0000000003247b64: shl     r10,3h
+  0x0000000003247b68: cmp     r10,rax
+  0x0000000003247b6b: jne     3185f60h          ;   {runtime_call}
+  0x0000000003247b71: nop     word ptr [rax+rax+0h]
+  0x0000000003247b7c: nop
+[Verified Entry Point]
+  0x0000000003247b80: mov     dword ptr [rsp+0ffffffffffffa000h],eax
+  0x0000000003247b87: push    rbp
+  0x0000000003247b88: sub     rsp,30h           ;*aload_0
+                                                ; - com.liujun.run.jvm.tools.hsdis.Bar::sum@0 (line 22)
+
+  0x0000000003247b8c: mov     eax,dword ptr [rdx+0ch]  ;*getfield a
+                                                ; - com.liujun.run.jvm.tools.hsdis.Bar::sum@1 (line 22)
+
+  0x0000000003247b8f: mov     rsi,76c667700h    ;   {oop(a 'java/lang/Class' = 'com/liujun/run/jvm/tools/hsdis/Bar')}
+  0x0000000003247b99: mov     esi,dword ptr [rsi+68h]  ;*getstatic b
+                                                ; - com.liujun.run.jvm.tools.hsdis.Bar::sum@4 (line 22)
+
+  0x0000000003247b9c: add     eax,esi
+  0x0000000003247b9e: add     eax,r8d
+  0x0000000003247ba1: add     rsp,30h
+  0x0000000003247ba5: pop     rbp
+  0x0000000003247ba6: test    dword ptr [9f0100h],eax  ;   {poll_return}
+  0x0000000003247bac: ret
+  0x0000000003247bad: nop
+  0x0000000003247bae: nop
+  0x0000000003247baf: mov     rax,qword ptr [r15+2a8h]
+  0x0000000003247bb6: mov     r10,0h
+  0x0000000003247bc0: mov     qword ptr [r15+2a8h],r10
+  0x0000000003247bc7: mov     r10,0h
+  0x0000000003247bd1: mov     qword ptr [r15+2b0h],r10
+  0x0000000003247bd8: add     rsp,30h
+  0x0000000003247bdc: pop     rbp
+  0x0000000003247bdd: jmp     31b0560h          ;   {runtime_call}
+  0x0000000003247be2: hlt
+  0x0000000003247be3: hlt
+  0x0000000003247be4: hlt
+  0x0000000003247be5: hlt
+  0x0000000003247be6: hlt
+  0x0000000003247be7: hlt
+  0x0000000003247be8: hlt
+  0x0000000003247be9: hlt
+  0x0000000003247bea: hlt
+  0x0000000003247beb: hlt
+  0x0000000003247bec: hlt
+  0x0000000003247bed: hlt
+  0x0000000003247bee: hlt
+  0x0000000003247bef: hlt
+  0x0000000003247bf0: hlt
+  0x0000000003247bf1: hlt
+  0x0000000003247bf2: hlt
+  0x0000000003247bf3: hlt
+  0x0000000003247bf4: hlt
+  0x0000000003247bf5: hlt
+  0x0000000003247bf6: hlt
+  0x0000000003247bf7: hlt
+  0x0000000003247bf8: hlt
+  0x0000000003247bf9: hlt
+  0x0000000003247bfa: hlt
+  0x0000000003247bfb: hlt
+  0x0000000003247bfc: hlt
+  0x0000000003247bfd: hlt
+  0x0000000003247bfe: hlt
+  0x0000000003247bff: hlt
+[Exception Handler]
+[Stub Code]
+  0x0000000003247c00: call    323fae0h          ;   {no_reloc}
+  0x0000000003247c05: mov     qword ptr [rsp+0ffffffffffffffd8h],rsp
+  0x0000000003247c0a: sub     rsp,80h
+  0x0000000003247c11: mov     qword ptr [rsp+78h],rax
+  0x0000000003247c16: mov     qword ptr [rsp+70h],rcx
+  0x0000000003247c1b: mov     qword ptr [rsp+68h],rdx
+  0x0000000003247c20: mov     qword ptr [rsp+60h],rbx
+  0x0000000003247c25: mov     qword ptr [rsp+50h],rbp
+  0x0000000003247c2a: mov     qword ptr [rsp+48h],rsi
+  0x0000000003247c2f: mov     qword ptr [rsp+40h],rdi
+  0x0000000003247c34: mov     qword ptr [rsp+38h],r8
+  0x0000000003247c39: mov     qword ptr [rsp+30h],r9
+  0x0000000003247c3e: mov     qword ptr [rsp+28h],r10
+  0x0000000003247c43: mov     qword ptr [rsp+20h],r11
+  0x0000000003247c48: mov     qword ptr [rsp+18h],r12
+  0x0000000003247c4d: mov     qword ptr [rsp+10h],r13
+  0x0000000003247c52: mov     qword ptr [rsp+8h],r14
+  0x0000000003247c57: mov     qword ptr [rsp],r15
+  0x0000000003247c5b: mov     rcx,567e5f18h     ;   {external_word}
+  0x0000000003247c65: mov     rdx,3247c05h      ;   {internal_word}
+  0x0000000003247c6f: mov     r8,rsp
+  0x0000000003247c72: and     rsp,0fffffffffffffff0h
+  0x0000000003247c76: call    56498230h         ;   {runtime_call}
+  0x0000000003247c7b: hlt
+[Deopt Handler Code]
+  0x0000000003247c7c: mov     r10,3247c7ch      ;   {section_word}
+  0x0000000003247c86: push    r10
+  0x0000000003247c88: jmp     3187600h          ;   {runtime_call}
+  0x0000000003247c8d: hlt
+  0x0000000003247c8e: hlt
+  0x0000000003247c8f: hlt
+Java HotSpot(TM) 64-Bit Server VM warning: PrintAssembly is enabled; turning on DebugNonSafepoints to gain additional output
+
+Process finished with exit code 0
