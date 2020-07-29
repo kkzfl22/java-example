@@ -49,7 +49,7 @@ public class ConstantPool {
 
     for (int i = 0; i < constantPool.length; i++) {
       ConstantBase baseInfo = constantPool[i];
-      sb.append(i + 1).append("-").append(baseInfo).append(",").append("\n");
+      sb.append(i).append("-").append(baseInfo).append(",").append("\n");
     }
 
     sb.append(",");

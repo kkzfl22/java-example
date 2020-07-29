@@ -19,16 +19,8 @@ import java.util.Map;
  */
 public class AttributeTableReader {
 
-  /** 类型处理信息 */
-  private static final Map<AttributeTypeEnum, AttributeTypeReaderInf> ATTRIBUTE_INSTANCE_MAP =
-      new HashMap<>();
-
   /** 实例信息 */
   public static final AttributeTableReader INSTANCE = new AttributeTableReader();
-
-  static {
-    ATTRIBUTE_INSTANCE_MAP.put(AttributeTypeEnum.CODE, AttributeReaderCodeImpl.INSTANCE);
-  }
 
   /**
    * 属性表数据
@@ -48,41 +40,13 @@ public class AttributeTableReader {
 
       while (readIndex < attributeSize) {
 
-        // 1,读取名称
-        short nameIndex = buffer.readShort();
-        // 获取类型相关的信息
-        AttributeTypeEnum typeInfo = this.getType(nameIndex, constantPool);
-
-        if (null != typeInfo) {
-          // 进行code的相关属性信息的读取操作
-          AttributeBase attributeInfo =
-              ATTRIBUTE_INSTANCE_MAP.get(typeInfo).attributeReader(nameIndex, buffer, constantPool);
-          attributes.getAttributeBases()[readIndex] = attributeInfo;
-        }
-
+        // 进行相关属性的读取操作
+        AttributeBase attributeInfo = AttributeReader.INSTANCE.reader(buffer, constantPool);
+        attributes.getAttributeBases()[readIndex] = attributeInfo;
         readIndex++;
       }
     }
 
     return attributes;
-  }
-
-  /**
-   * 获取类型信息
-   *
-   * @param index 索引信息
-   * @param constantPool 静态常量池
-   * @return 返回枚举对象信息
-   */
-  private AttributeTypeEnum getType(int index, ConstantPool constantPool) {
-    // 2,从constant中提取信息
-    ConstantBase baseInfo = constantPool.getConstantPool()[index];
-    // 3,转换为utf8信息提供
-    Utf8Info codeName = (Utf8Info) baseInfo;
-
-    String name = new String(codeName.getBytes());
-    AttributeTypeEnum typeInfo = AttributeTypeEnum.getType(name);
-
-    return typeInfo;
   }
 }

@@ -20,7 +20,7 @@ public class AttributeCode extends AttributeBase {
   /** 局部变量表所需的存储空间 */
   private short maxLocals;
 
-  /** 字节码长度 */
+  /** 字节码所占空间的大小 */
   private int codeLength;
 
   /** 用于存储字节码指令的一系列字节流,即为字节码指令 */

@@ -1,5 +1,11 @@
 package com.liujun.run.jvm.jvmclass.constant;
 
+import com.liujun.run.jvm.jvmclass.utils.ByteBufferOperator;
+
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.IntSupplier;
+
 /**
  * 字节码指令
  *
@@ -145,46 +151,133 @@ public enum ByteCodeCommand {
   FMUL((byte) 0x6a, "fmul", "将栈顶两个float型数值相乘并将结果压入栈顶"),
   DMUL((byte) 0x6b, "dmul", "将栈顶两个double型数值相乘并将结果压入栈顶"),
 
-  IDIV((byte)0x6c,"idiv","将栈顶两个int型数值相除并将结果压入栈顶"),
-  LDIV((byte)0x6d,"ldiv","将栈顶两个long型数值相除并将结果压入栈顶"),
-  FDIV((byte)0x6e,"fdiv","将栈顶两个float型数值相除并将结果压入栈顶"),
-  DDIV((byte)0x6f,"ddiv","将栈顶两个double型数值相除并将结果压入栈顶"),
+  IDIV((byte) 0x6c, "idiv", "将栈顶两个int型数值相除并将结果压入栈顶"),
+  LDIV((byte) 0x6d, "ldiv", "将栈顶两个long型数值相除并将结果压入栈顶"),
+  FDIV((byte) 0x6e, "fdiv", "将栈顶两个float型数值相除并将结果压入栈顶"),
+  DDIV((byte) 0x6f, "ddiv", "将栈顶两个double型数值相除并将结果压入栈顶"),
 
-  IREM((byte)0x70,"irem","将栈顶两个int型数值进行取模运算将将结果压入栈顶"),
-  LREM((byte)0x71,"lrem","将栈顶两个long型数值进行取模运算将将结果压入栈顶"),
-  FREM((byte)0x72,"frem","将栈顶两个float型数值进行取模运算将将结果压入栈顶"),
-  DREM((byte)0x73,"drem","将栈顶两个double型数值进行取模运算将将结果压入栈顶"),
+  IREM((byte) 0x70, "irem", "将栈顶两个int型数值进行取模运算将将结果压入栈顶"),
+  LREM((byte) 0x71, "lrem", "将栈顶两个long型数值进行取模运算将将结果压入栈顶"),
+  FREM((byte) 0x72, "frem", "将栈顶两个float型数值进行取模运算将将结果压入栈顶"),
+  DREM((byte) 0x73, "drem", "将栈顶两个double型数值进行取模运算将将结果压入栈顶"),
 
-  INEG((byte)0x74,"ineg","将栈顶int型数值取负并将结果压入栈顶"),
-  LNEG((byte)0x75,"lneg","将栈顶long型数值取负并将结果压入栈顶"),
-  FNEG((byte)0x76,"fneg","将栈顶float型数值取负并将结果压入栈顶"),
-  DNEG((byte)0x77,"dneg","将栈顶double型数值取负并将结果压入栈顶"),
+  INEG((byte) 0x74, "ineg", "将栈顶int型数值取负并将结果压入栈顶"),
+  LNEG((byte) 0x75, "lneg", "将栈顶long型数值取负并将结果压入栈顶"),
+  FNEG((byte) 0x76, "fneg", "将栈顶float型数值取负并将结果压入栈顶"),
+  DNEG((byte) 0x77, "dneg", "将栈顶double型数值取负并将结果压入栈顶"),
 
-  ISHL((byte)0x78,"ishl","将int型数值左移指定位数并将结果压入栈顶"),
-  LSHL((byte)0x79,"lshl","将long型数值左移指定位数并将结果压入栈顶"),
+  ISHL((byte) 0x78, "ishl", "将int型数值左移指定位数并将结果压入栈顶"),
+  LSHL((byte) 0x79, "lshl", "将long型数值左移指定位数并将结果压入栈顶"),
 
-  ISHR((byte)0x7a,"ishr","将int型数值右（带符号）移指定位数并将结果压入栈顶"),
-  LSHR((byte)0x7b,"lshr","将long型数值右（带符号）移指定位数并将结果压入栈顶"),
+  ISHR((byte) 0x7a, "ishr", "将int型数值右（带符号）移指定位数并将结果压入栈顶"),
+  LSHR((byte) 0x7b, "lshr", "将long型数值右（带符号）移指定位数并将结果压入栈顶"),
 
-  IUSHR((byte)0x7c,"iushr","将int型数值右（无符号)移指定位数并将结果压入栈顶"),
-  LUSHR((byte)0x7d,"lushr","将long型数值右（无符号)移指定位数并将结果压入栈顶"),
+  IUSHR((byte) 0x7c, "iushr", "将int型数值右（无符号)移指定位数并将结果压入栈顶"),
+  LUSHR((byte) 0x7d, "lushr", "将long型数值右（无符号)移指定位数并将结果压入栈顶"),
 
-  IAND((byte)0x7e,"iand","将栈顶两int型数值进行“按位与”运算并将结果压入栈顶"),
-  LAND((byte)0x7f,"land","将栈顶两long型数值进行“按位与”运算并将结果压入栈顶"),
+  IAND((byte) 0x7e, "iand", "将栈顶两int型数值进行“按位与”运算并将结果压入栈顶"),
+  LAND((byte) 0x7f, "land", "将栈顶两long型数值进行“按位与”运算并将结果压入栈顶"),
 
-  IOR((byte)0x80,"ior","将栈顶两个int型数值进行“按位或”运算并将结果压入栈顶"),
-  LOR((byte)0x81,"lor","将栈顶两个long型数值进行“按位或”运算并将结果压入栈顶"),
+  IOR((byte) 0x80, "ior", "将栈顶两个int型数值进行“按位或”运算并将结果压入栈顶"),
+  LOR((byte) 0x81, "lor", "将栈顶两个long型数值进行“按位或”运算并将结果压入栈顶"),
 
-  IXOR((byte)0x82,"ixor","将栈顶两个int型数值进行“按位异或”运算并将结果压入栈顶"),
-  LXOR((byte)0x83,"lxor","将栈顶两个long型数值进行“按位异或”运算并将结果压入栈顶"),
+  IXOR((byte) 0x82, "ixor", "将栈顶两个int型数值进行“按位异或”运算并将结果压入栈顶"),
+  LXOR((byte) 0x83, "lxor", "将栈顶两个long型数值进行“按位异或”运算并将结果压入栈顶"),
 
-  IINC((byte)0x84,"iinc","将指定int型变量增加指定值（如i++,i--,i+=2)"),
+  IINC((byte) 0x84, "iinc", "将指定int型变量增加指定值（如i++,i--,i+=2)"),
 
-  I2L((byte)0x85,"i2l","将栈顶int型数值强制转换成long数值并将结果压入栈顶"),
-//  ((byte)0x,"",""),
-//  ((byte)0x,"",""),
+  I2L((byte) 0x85, "i2l", "将栈顶int型数值强制转换成long数值并将结果压入栈顶"),
+  I2F((byte) 0x86, "i2f", "将栈顶int型数值强制转换成float型数值并将结果压入栈顶"),
+  I2D((byte) 0x87, "i2d", "将栈顶int型数值强制转换成double型数值并将结果压入栈顶"),
 
-;
+  L2I((byte) 0x88, "l2i", "将栈顶long型数值强制转换成int型数值并将结果压入栈顶"),
+  L2F((byte) 0x89, "l2f", "将栈顶long型数值强制转换成flow型数值并将结果压入栈顶"),
+  L2D((byte) 0x8a, "l2s", "将栈顶long型数值强制转换为double型数值并将结果压入栈顶"),
+
+  F2I((byte) 0x8b, "f2i", "将栈顶float型数值强制转换成int型数值并将结果压入栈顶"),
+  F2L((byte) 0x8c, "f2l", "将栈顶float型数值强制转换成long型数值并将结果压入栈顶"),
+  F2D((byte) 0x8d, "f2d", "将栈顶float型数值强制转换成double型数值并将结果压入栈顶"),
+
+  D2I((byte) 0x8e, "d2i", "将栈顶double型数值强制转换成int并将结果压入栈顶"),
+  D2L((byte) 0x8f, "d2l", "将栈顶double型数值强制转换成long并将结果压入栈顶"),
+  D2F((byte) 0x90, "d2f", "将栈顶double型数值强制转换成float并将结果压入栈顶"),
+
+  I2B((byte) 0x91, "i2b", "将栈顶int型数值强制转换成byte型数值并将结果压入栈顶"),
+  I2C((byte) 0x92, "i2c", "将栈顶int型数值强制转换成char型数值并将结果压入栈顶"),
+  I2S((byte) 0x93, "i2s", "将栈顶int型数值强制转换成short型数值并将结果压入栈顶"),
+
+  LCMP((byte) 0x94, "lcmp", "比较栈顶两long型数值的大小，并将结果(1,0,-1)压入栈顶"),
+  FCMPL((byte) 0x95, "fcmpl", "比较栈顶两个float型数值的大小，并将结果(1,0,-1)压入栈顶,当其中一个值为'NaN'时，将-1压入栈顶"),
+  FCMPG((byte) 0x96, "fcmpg", "比较栈顶两个float型数值的大小，并将结果(1,0,-1)压入栈顶,当其中一个值为'NaN'时，将1压入栈顶"),
+  DCMPL((byte) 0x97, "dcmpl", "比较栈顶两个double型数值的大小，并将结果(1,0,-1)压入栈顶,当其中一个值为'NaN'时，将-1压入栈顶"),
+  DCMPG((byte) 0x98, "dcmpg", "比较栈顶两个double型数值的大小，并将结果(1,0,-1)压入栈顶,当其中一个值为'NaN'时，将1压入栈顶"),
+
+  IFEQ((byte) 0x99, "ifeq", "当栈顶int型数值为0时跳转"),
+  IFNE((byte) 0x9a, "ifne", "当栈顶int型数值不为0时跳转"),
+  IFLT((byte) 0x9b, "iflt", "当栈顶int型数值小于0时跳转"),
+  IFGE((byte) 0x9c, "ifge", "当栈顶int型数值大于或者等于0时跳转"),
+  IFGT((byte) 0x9d, "ifgt", "当栈顶int型数值大于0时跳转"),
+  IFLE((byte) 0x9e, "ifle", "当栈顶int型数值小于或等于0时跳转"),
+
+  IF_ICMPEQ((byte) 0x9f, "if_icmpeq", "比较栈顶两int型数值大小；当结果为0时跳转"),
+  IF_ICMPNE((byte) 0xa0, "if_icmpne", "比较栈顶两int型数值大小，当结果不等于0时跳转"),
+  IF_ICMPLT((byte) 0xa1, "if_icmplt", "比较栈顶两个int型数值大小，当结果小于0时跳转"),
+  IF_ICMPGE((byte) 0xa2, "if_icmpge", "比较栈顶两个int型数值大小，当结果大于等于0时跳转"),
+  IF_ICMPGT((byte) 0xa3, "if_icmpgt", "比较栈顶两个int型数值大小，当结果大于0时跳转"),
+  IF_ICMPLE((byte) 0xa4, "if_icmple", "比较栈顶两个int型数值大小，当结果小于或者等于0时跳转"),
+  IF_ACMPEQ((byte) 0xa5, "if_acmpeq", "比较栈顶两个引用类型，当结果相等时跳转"),
+  IF_ACMPNE((byte) 0xa6, "if_acmpne", "比较栈顶两个引用类型，当结果不相等时跳转"),
+
+  GOTO((byte) 0xa7, "goto", "无条件跳转"),
+  JSR((byte) 0xa8, "jsr", "跳转至指定的16位offset位置，并将jsr的下一条指令地址压入栈顶"),
+  RET((byte) 0xa9, "ret", "返回至本地变量指定的index的指令位置（一般jsr或者jsr_w联合使用)"),
+
+  TABLE_SWITCH((byte) 0xaa, "tableswitch", "用于switch条件跳转，case值连续（可变长度指令）"),
+  LOOKUP_SWITCH((byte) 0xab, "lookupswitch", "用于switch条件跳转，case值不连续（可变长度指令)"),
+
+  IRETURN((byte) 0xac, "ireturn", "从当前方法返回int"),
+  LRETURN((byte) 0xad, "lreturn", "从当前方法返回long"),
+  FRETURN((byte) 0xae, "freturn", "从当前方法返回float"),
+  DRETURN((byte) 0xaf, "dreturn", "从当前方法返回double"),
+  ARETURN((byte) 0xb0, "areturn", "从当前返回对象引用"),
+  RETURN((byte) 0xb1, "return", "从当前返回void"),
+
+  GET_STATIC((byte) 0xb2, "getstatic", "获取指定类的静态域，并将其压入栈顶"),
+  PUT_STATIC((byte) 0xb3, "putstatic", "为指定类的静态域赋值"),
+  GET_FIELD((byte) 0xb4, "getfield", "获取指定类的实例域，并将其压入栈顶"),
+  PUT_FIELD((byte) 0xb5, "putfield", "为指定类的实例域赋值"),
+
+  INVOKE_VIRTUAL((byte) 0xb6, "invokevirtual", "调用实例方法"),
+  INVOKE_SPECIAL((byte) 0xb7, "invokespecial", "调用超类构造方法，实例初始化方法，私有方法", (byte) 2),
+  INVOKE_STATIC((byte) 0xb8, "invokestatic", "调用静态方法"),
+  INVOKE_INTERFACE((byte) 0xb9, "invokeinterface", "调用接口方法"),
+  INVOKE_DYNAMIC((byte) 0xba, "invokedynamic", "调用动态方法"),
+
+  NEW((byte) 0xbb, "new", "创建一个对象，并将其压入栈顶"),
+  NEWARRAY((byte) 0xbc, "newarray", "创建一个指定的原始类型（如int,float,char）的数组，并将其引用值压入栈顶"),
+  ANEWARRAY((byte) 0xbd, "anewarray", "创建一个引用型（如类，接口，数组)的数组，将将其引用值压入栈顶"),
+  ARRAYLENGTH((byte) 0xbe, "arraylength", "获得数组的长度值，并压入栈顶"),
+
+  ATHROW((byte) 0xbf, "athrow", "将栈顶的异常抛出"),
+  CHECK_CASE((byte) 0xc0, "checkcase", "检查类型转换，检查未通过则抛出ClassCaseException"),
+  INSTANCEOF((byte) 0xc1, "instanceof", "检查对象是否为指定类型的实例，如果是将1压入栈顶，否则将0压入栈顶"),
+
+  MONITOR_ENTER((byte) 0xc2, "monitorenter", "获取对象的锁，用于同步方法或者同步块"),
+  MONITOR_EXIT((byte) 0xc3, "monitorexit", "释放对象的锁，用于同步方法或者同步块"),
+
+  WIDE((byte) 0xc4, "wide", "扩展本地变量的宽度"),
+
+  MULTIANEWARRAY(
+      (byte) 0xc5, "multianewarray", "创建指定类型和指定维度的多维数组(执行该指令时，操作栈中必须包括各维度的长度值)，并将其值压入栈顶"),
+
+  IFNULL((byte) 0xc6, "ifnull", "为null时跳转"),
+
+  IFNOTNULL((byte) 0xc7, "ifnotnull", "不为null时跳转"),
+
+  GOTO_W((byte) 0xc8, "goto_w", "无条件跳转（宽索引)"),
+
+  JSR_W((byte) 0xc9, "jsr_w", "跳转至指令的32位offset位置，并将jsr的下一条指令压入栈顶"),
+  ;
 
   /** 指令 */
   private byte command;
@@ -195,10 +288,36 @@ public enum ByteCodeCommand {
   /** 含义 */
   private String msg;
 
+  /** 参数类型读取长度 */
+  private byte paramLength;
+
   ByteCodeCommand(byte command, String symbol, String msg) {
     this.command = command;
     this.symbol = symbol;
     this.msg = msg;
+  }
+
+  ByteCodeCommand(byte command, String symbol, String msg, byte paramLength) {
+    this.command = command;
+    this.symbol = symbol;
+    this.msg = msg;
+    this.paramLength = paramLength;
+  }
+
+  /**
+   * 通过指令码获取指令
+   *
+   * @param code
+   * @return
+   */
+  public static ByteCodeCommand getCommand(byte code) {
+    for (ByteCodeCommand codeEnum : values()) {
+      if (codeEnum.getCommand() == code) {
+        return codeEnum;
+      }
+    }
+
+    return null;
   }
 
   public byte getCommand() {
@@ -213,10 +332,17 @@ public enum ByteCodeCommand {
     return msg;
   }
 
+  public byte getParamLength() {
+    return paramLength;
+  }
+
   @Override
   public String toString() {
     final StringBuilder sb = new StringBuilder("ByteCodeCommand{");
-    sb.append("command=").append(command);
+    sb.append("command=hex(")
+        .append(Integer.toHexString(command & 0xff))
+        .append(")")
+        .append(command);
     sb.append(", symbol='").append(symbol).append('\'');
     sb.append(", msg='").append(msg).append('\'');
     sb.append('}');

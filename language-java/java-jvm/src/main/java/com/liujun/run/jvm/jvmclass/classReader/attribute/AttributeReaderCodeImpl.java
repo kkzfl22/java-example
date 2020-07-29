@@ -3,9 +3,13 @@ package com.liujun.run.jvm.jvmclass.classReader.attribute;
 import com.liujun.run.jvm.jvmclass.bean.ConstantPool;
 import com.liujun.run.jvm.jvmclass.bean.attribute.AttributeBase;
 import com.liujun.run.jvm.jvmclass.bean.attribute.AttributeCode;
+import com.liujun.run.jvm.jvmclass.bean.attribute.AttributeTable;
 import com.liujun.run.jvm.jvmclass.bean.exception.ExceptionTable;
 import com.liujun.run.jvm.jvmclass.classReader.exception.ExceptionReader;
+import com.liujun.run.jvm.jvmclass.constant.ByteCodeCommand;
 import com.liujun.run.jvm.jvmclass.utils.ByteBufferOperator;
+
+import java.util.Arrays;
 
 /**
  * code的属性相关的读取
@@ -32,11 +36,28 @@ public class AttributeReaderCodeImpl implements AttributeTypeReaderInf {
     if (codeAttribute.getCodeLength() > 0) {
       byte[] codeArrays = new byte[codeAttribute.getCodeLength()];
       int codeIndex = 0;
-      while (codeIndex < codeAttribute.getCodeLength()) {
+      int codeLength = 0;
+      while (codeLength < codeAttribute.getCodeLength()) {
         codeArrays[codeIndex] = buffer.readU1();
-        short dsItem = 0xf8;
+        codeLength++;
+
+        // 获得指令信息
+        ByteCodeCommand command = ByteCodeCommand.getCommand(codeArrays[codeIndex]);
+
+        // 检查当前是否需要读取参数
+        if (command.getParamLength() > 0) {
+          // 按指定的位数读取数据
+          byte[] readData = buffer.readLength(command.getParamLength());
+          codeLength += command.getParamLength();
+
+          // 数据的参数
+          System.out.println(Arrays.toString(readData));
+        }
+
+        System.out.println("指令信息:" + command);
         System.out.println(
             "当前指令:" + Integer.toHexString((codeArrays[codeIndex] & ByteBufferOperator.FLAG)));
+
         codeIndex++;
       }
       // 将字节码指令存储
@@ -50,11 +71,18 @@ public class AttributeReaderCodeImpl implements AttributeTypeReaderInf {
           ExceptionReader.INSTANCE.reader(codeAttribute.getExceptionTableLength(), buffer);
       codeAttribute.setExceptionInfo(exceptionTables);
     }
-    // 读取属性信息
+    // 读取属性的个数
     codeAttribute.setAttributeCount(buffer.readShort());
     if (codeAttribute.getAttributeCount() > 0) {
-      // 进行属性信息的读取操作
+      int attributeIndex = 0;
+      AttributeBase[] attributes = new AttributeBase[codeAttribute.getAttributeCount()];
 
+      while (attributeIndex < codeAttribute.getAttributeCount()) {
+        // 1,读取索引号
+        attributes[attributeIndex] = AttributeReader.INSTANCE.reader(buffer, constantPool);
+        attributeIndex++;
+      }
+      codeAttribute.setAttribute(attributes);
     }
 
     return codeAttribute;

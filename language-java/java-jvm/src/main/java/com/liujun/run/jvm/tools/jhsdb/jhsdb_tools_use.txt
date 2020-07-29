@@ -1,0 +1,98 @@
+com.liujun.run.jvm.tools.JHSDB_TestCase
+
+
+
+cd D:\java\workspace\selfwork\java-example\language-java\java-jvm\target\classes
+
+java -Xmx10m -XX:+UseSerialGC -XX:-UseCompressedOops -cp java-jvm-1.0-SNAPSHOT.jar:lib/* com.liujun.run.jvm.tools.JHSDB_TestCase
+
+java -Xmx10m -XX:+UseSerialGC -XX:-UseCompressedOops com.liujun.run.jvm.tools.JHSDB_TestCase
+
+
+java -Xmx10m -XX:+UseSerialGC  -XX:-UseCompressedOops com.liujun.run.jvm.tools.JHSDB_TestCase
+
+
+-- 堆信息
+hsdb> universe
+Heap Parameters:
+Gen 0:   eden [0x000001faeb800000,0x000001faeba11898,0x000001faebab0000) space capacity = 2818048, 76.96760310683139 used
+  from [0x000001faebab0000,0x000001faebab0000,0x000001faebb00000) space capacity = 327680, 0.0 used
+  to   [0x000001faebb00000,0x000001faebb00000,0x000001faebb50000) space capacity = 327680, 0.0 usedInvocations: 0
+
+Gen 1:   old  [0x000001faebb50000,0x000001faebb50000,0x000001faec200000) space capacity = 7012352, 0.0 usedInvocations: 0
+
+
+scanoops 0x000001faeb800000 0x000001faebb50000 com.liujun.run.jvm.tools.JHSDB_TestCase$ObjectHolder
+
+
+--在使用scanoops命令时，需要指使完整的路径
+hsdb> scanoops 0x000001db2ae00000 0x000001db2b150000 com.liujun.run.jvm.tools.JHSDB_TestCase$ObjectHolder
+0x000001db2af730d8 com/liujun/run/jvm/tools/JHSDB_TestCase$ObjectHolder
+0x000001db2af73158 com/liujun/run/jvm/tools/JHSDB_TestCase$ObjectHolder
+0x000001db2af731c0 com/liujun/run/jvm/tools/JHSDB_TestCase$ObjectHolder
+
+
+
+revptrs 0x000001db2af730d8
+
+出现警告
+C:\Windows\system32>jhsdb hsdb --pid 11072
+Warning: Nashorn engine is planned to be removed from a future JDK release
+javax.script.ScriptException: TypeError: sapkg.runtime.VM.getVM is not a function in sa.js at line number 54
+Warning! JS Engine can't start, some commands will not be available.
+
+
+
+hsdb> help
+Available commands:
+  assert true | false
+  attach pid | exec core
+  buildreplayjars [ all | app | boot ]  | [ prefix ]
+  detach
+  dis address [length]
+  disassemble address
+  dumpcfg { -a | id }
+  dumpcodecache
+  dumpideal { -a | id }
+  dumpilt { -a | id }
+  dumpreplaydata { <address > | -a | <thread_id> }
+  echo [ true | false ]
+  examine [ address/count ] | [ address,address]
+  field [ type [ name fieldtype isStatic offset address ] ]
+  findpc address
+  flags [ flag | -nd ]
+  g1regiondetails
+  help [ command ]
+  history
+  inspect expression
+  intConstant [ name [ value ] ]
+  jdis address
+  jhisto
+  jstack [-v]
+  livenmethods
+  longConstant [ name [ value ] ]
+  pmap
+  print expression
+  printall
+  printas type expression
+  printmdo [ -a | expression ]
+  printstatics [ type ]
+  pstack [-v]
+  quit
+  reattach
+  revptrs address
+  scanoops start end [ type ]
+  search [ heap | perm | rawheap | codecache | threads ] value
+  source filename
+  symbol address
+  symboldump
+  symboltable name
+  thread { -a | id }
+  threads
+  tokenize ...
+  type [ type [ name super isOop isInteger isUnsigned size ] ]
+  universe
+  verbose true | false
+  versioncheck [ true | false ]
+  vmstructsdump
+  where { -a | id }
