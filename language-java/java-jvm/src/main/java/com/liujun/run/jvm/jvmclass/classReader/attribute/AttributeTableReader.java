@@ -39,7 +39,6 @@ public class AttributeTableReader {
       short readIndex = 0;
 
       while (readIndex < attributeSize) {
-
         // 进行相关属性的读取操作
         AttributeBase attributeInfo = AttributeReader.INSTANCE.reader(buffer, constantPool);
         attributes.getAttributeBases()[readIndex] = attributeInfo;

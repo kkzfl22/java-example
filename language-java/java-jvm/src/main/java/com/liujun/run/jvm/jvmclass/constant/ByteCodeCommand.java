@@ -244,7 +244,7 @@ public enum ByteCodeCommand {
 
   GET_STATIC((byte) 0xb2, "getstatic", "获取指定类的静态域，并将其压入栈顶"),
   PUT_STATIC((byte) 0xb3, "putstatic", "为指定类的静态域赋值"),
-  GET_FIELD((byte) 0xb4, "getfield", "获取指定类的实例域，并将其压入栈顶"),
+  GET_FIELD((byte) 0xb4, "getfield", "获取指定类的实例域，并将其压入栈顶", (byte) 2),
   PUT_FIELD((byte) 0xb5, "putfield", "为指定类的实例域赋值"),
 
   INVOKE_VIRTUAL((byte) 0xb6, "invokevirtual", "调用实例方法"),

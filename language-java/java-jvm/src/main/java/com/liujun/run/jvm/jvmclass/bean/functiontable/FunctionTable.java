@@ -1,5 +1,6 @@
 package com.liujun.run.jvm.jvmclass.bean.functiontable;
 
+import com.liujun.run.jvm.jvmclass.bean.attribute.AttributeBase;
 import lombok.Data;
 import lombok.ToString;
 
@@ -18,6 +19,8 @@ public class FunctionTable {
 
   /** 方法表信息 */
   private Function[] functions;
+
+
 
   public FunctionTable(short functionCount) {
     this.functionCount = functionCount;

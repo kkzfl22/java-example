@@ -31,6 +31,13 @@ public class AttributeReader {
     // 行号与字节的关联
     ATTRIBUTE_INSTANCE_MAP.put(
         AttributeTypeEnum.LINENUMBER_TABLE, AttributeLineNumberTableImpl.INSTANCE);
+
+    // 局部变量表与java源代码中定义的变量之间的关系
+    ATTRIBUTE_INSTANCE_MAP.put(
+        AttributeTypeEnum.LOCAL_VARIABLE_TABLE, AttributeLocalVariableTableImpl.INSTANCE);
+
+    // java源代码文件信息
+    ATTRIBUTE_INSTANCE_MAP.put(AttributeTypeEnum.SOURCE_FILE, AttributeSourceFileImpl.INSTANCE);
   }
 
   /**

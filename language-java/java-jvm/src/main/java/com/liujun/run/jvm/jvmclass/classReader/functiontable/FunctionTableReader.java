@@ -54,11 +54,13 @@ public class FunctionTableReader {
     field.setDescriptorIndex(buffer.readShort());
 
     short attributeCount = buffer.readShort();
+
     if (attributeCount > 0) {
       System.out.println("需要进行属性表数据读取");
-      AttributeTableReader.INSTANCE.readerFieldTable(attributeCount, buffer, constantPool);
+      AttributeTable data =
+          AttributeTableReader.INSTANCE.readerFieldTable(attributeCount, buffer, constantPool);
+      field.setAttributes(data);
     }
-    // field.setAttributes(attributes);
 
     return field;
   }

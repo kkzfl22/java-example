@@ -1,5 +1,6 @@
 package com.liujun.run.jvm.jvmclass.bean;
 
+import com.liujun.run.jvm.jvmclass.bean.attribute.AttributeBase;
 import com.liujun.run.jvm.jvmclass.bean.fieldtable.FieldTable;
 import com.liujun.run.jvm.jvmclass.bean.functiontable.FunctionTable;
 import com.liujun.run.jvm.jvmclass.constant.AccessFlagsEnum;
@@ -47,6 +48,9 @@ public class JavaClassEntity {
 
   /** 方法表信息 */
   private FunctionTable functionTable;
+
+  /** 与源文件的关联信息 */
+  private AttributeBase sourceFile;
 
   @Override
   public String toString() {

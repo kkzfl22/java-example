@@ -4,7 +4,11 @@ import com.liujun.run.jvm.jvmclass.FileChannelReader;
 import com.liujun.run.jvm.jvmclass.bean.ConstantPool;
 import com.liujun.run.jvm.jvmclass.bean.InterfaceArrayEntity;
 import com.liujun.run.jvm.jvmclass.bean.JavaClassEntity;
+import com.liujun.run.jvm.jvmclass.bean.attribute.AttributeBase;
+import com.liujun.run.jvm.jvmclass.bean.attribute.AttributeTable;
 import com.liujun.run.jvm.jvmclass.bean.constanttype.ConstantBase;
+import com.liujun.run.jvm.jvmclass.classReader.attribute.AttributeReader;
+import com.liujun.run.jvm.jvmclass.classReader.attribute.AttributeTableReader;
 import com.liujun.run.jvm.jvmclass.classReader.field.FieldTableReader;
 import com.liujun.run.jvm.jvmclass.classReader.functiontable.FunctionTableReader;
 import com.liujun.run.jvm.jvmclass.utils.ByteBufferOperator;
@@ -50,6 +54,11 @@ public class ClassFileReader {
     javaClass.setFunctionTable(
         FunctionTableReader.INSTANCE.readerFunctionTable(
             bufferReader, javaClass.getConstantPool()));
+
+    // 读取源代码信息
+    AttributeBase sourceFile =
+        AttributeReader.INSTANCE.reader(bufferReader, javaClass.getConstantPool());
+    javaClass.setSourceFile(sourceFile);
 
     System.out.println(javaClass);
     System.out.println("=============================================");

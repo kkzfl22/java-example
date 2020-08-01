@@ -84,6 +84,7 @@ public class AttributeReaderCodeImpl implements AttributeTypeReaderInf {
       }
       codeAttribute.setAttribute(attributes);
     }
+    // 读取javasource类的信息
 
     return codeAttribute;
   }

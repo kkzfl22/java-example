@@ -29,7 +29,7 @@ public enum AttributeTypeEnum {
   LINENUMBER_TABLE("LineNumberTable"),
 
   /** 方法的局部变量描述 */
-  LOCAL_VARIABLE_TABLE("localVariableTable"),
+  LOCAL_VARIABLE_TABLE("LocalVariableTable"),
 
   /** JDK6中新增的属性，供新的类型检查验证器(Type Checker)检查和处理目标方法的局部变量和操作数栈所需要的类型是否匹配。 */
   STACK_MAP_TABLE("StackMapTable"),
