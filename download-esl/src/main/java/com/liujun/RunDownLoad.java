@@ -1,5 +1,6 @@
 package com.liujun;
 
+import com.liujun.algorithm.bloomfilter.HtmlUrlFilter;
 import com.liujun.common.flow.FlowServiceContext;
 import com.liujun.common.flow.FlowServiceInf;
 import com.liujun.download.esl.HtmlAnalyzeFLow;
@@ -23,6 +24,9 @@ public class RunDownLoad {
   static {
     // 退出流程
     FLOW.add(ShutDownHook.INSTANCE);
+    // 加载链接的布隆过滤器
+    // 加载网页内容的布隆过滤器
+    FLOW.add(HtmlBoomFilterLoader.INSTANCE);
     // 保存存错误链接信息
     FLOW.add(HrefErrorSaveTask.INSTANCE);
     // 保存下载队列
@@ -38,16 +42,29 @@ public class RunDownLoad {
     // 1,加载启动流程
     startFlow();
 
-    HrefData hrefPut = new HrefData();
-
-    hrefPut.setHrefUrl("https://www.rong-chang.com/");
-    hrefPut.setHrefText("esl_index");
-    hrefPut.setFileName("index");
-    hrefPut.getRelativePath().add("index");
-
-    HtmlHrefQueueManager.INSTANCE.getHrefQueue().putHref(hrefPut);
+    // 首次数据的添加操作
+    firstAdd();
 
     HtmlAnalyzeFLow.INSTANCE.downloadHtmlLoop();
+  }
+
+  /** 首次数据添加 */
+  private static void firstAdd() {
+    String url = "https://www.rong-chang.com/";
+
+    boolean exists = HtmlUrlFilter.INSTANCE.exists(url);
+
+    if (!exists) {
+
+      HrefData hrefPut = new HrefData();
+
+      hrefPut.setHrefUrl(url);
+      hrefPut.setHrefText("esl_index");
+      hrefPut.setFileName("index");
+      hrefPut.getRelativePath().add("index");
+
+      HtmlHrefQueueManager.INSTANCE.getHrefQueue().putHref(hrefPut);
+    }
   }
 
   public static void startFlow() {

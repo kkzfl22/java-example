@@ -33,7 +33,10 @@ public enum TestFileName {
   HOTEL("esl_english_hotel.html"),
 
   /** 编码特殊的网页 */
-  ENGLISH_FOR_SPECIFIC_PURPOSES("CharsetEnglishforSpecificPurposes.html");
+  ENGLISH_FOR_SPECIFIC_PURPOSES("CharsetEnglishforSpecificPurposes.html"),
+
+  ERROR_CODE_WINDOWS("esl_english_codeError_window-1252.html");
+  ;
 
   /** 文件名 */
   private String fileName;

@@ -35,7 +35,7 @@ public class HtmlAudioAddQueue implements FlowServiceInf {
 
     HtmlData htmlData = context.getObject(FlowKeyEnum.FLOW_CONTEXT_PROCESS_DATA.getKey());
 
-    if (htmlData.getAudioHref() != null && !htmlData.getAudioHref().isEmpty()) {
+    if (null != htmlData && htmlData.getAudioHref() != null && !htmlData.getAudioHref().isEmpty()) {
 
       logger.info("collect html audio queue add queue start ");
 

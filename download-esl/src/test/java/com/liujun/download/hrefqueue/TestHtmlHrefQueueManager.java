@@ -12,8 +12,15 @@ import org.junit.Test;
 public class TestHtmlHrefQueueManager {
 
   @Test
-  public void load() {
+  public void saveLoad() {
     HtmlHrefQueueManager.INSTANCE.save();
+    HtmlHrefQueueManager.INSTANCE.load();
+    HtmlHrefQueue queue = HtmlHrefQueueManager.INSTANCE.getHrefQueue();
+    Assert.assertNotNull(queue);
+  }
+
+  @Test
+  public void load() {
     HtmlHrefQueueManager.INSTANCE.load();
     HtmlHrefQueue queue = HtmlHrefQueueManager.INSTANCE.getHrefQueue();
     Assert.assertNotNull(queue);

@@ -6,6 +6,7 @@ import com.liujun.common.flow.FlowServiceContext;
 import com.liujun.common.flow.FlowServiceInf;
 import com.liujun.element.constant.HttpCharsetFlowEnum;
 import com.liujun.element.download.HttpUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * html4中的网页内容编码获取
@@ -64,7 +65,7 @@ public class HtmlContextTypeGet implements FlowServiceInf {
   public static final HtmlContextTypeGet INSTANCE = new HtmlContextTypeGet();
 
   @Override
-  public boolean runFlow(FlowServiceContext context)  {
+  public boolean runFlow(FlowServiceContext context) {
 
     byte[] dataArraysInput =
         context.getObject(HttpCharsetFlowEnum.CHARSET_INPUT_INPUTARRAYS.getKey());
@@ -164,10 +165,14 @@ public class HtmlContextTypeGet implements FlowServiceInf {
       if (chsetIndex != -1 && -1 != endIndex) {
         if (matchIndex <= chsetIndex && chsetIndex <= endIndex) {
           // 需要加1，因为还有一个引号占用
-          chsetIndex = chsetIndex + CHARSET_START.length() + 1;
+          chsetIndex = chsetIndex + CHARSET_START.length();
 
           int endPost = CHARSETHTML5_CONTEXT_END.matcherIndex(dataArrays, chsetIndex);
           outDataValue = new String(dataArrays, chsetIndex, endPost - chsetIndex);
+
+          if (StringUtils.isNotEmpty(outDataValue)) {
+            outDataValue = outDataValue.trim();
+          }
 
           break;
         } else {

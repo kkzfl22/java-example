@@ -10,6 +10,7 @@ import com.liujun.common.utils.FileUtils;
 import com.liujun.download.esl.constant.FlowKeyEnum;
 import com.liujun.element.html.bean.HrefData;
 import com.liujun.element.html.bean.HtmlData;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,25 +36,27 @@ public class HtmlContextAnalyzeDataSave implements FlowServiceInf {
   @Override
   public boolean runFlow(FlowServiceContext context) {
 
-    logger.info("collect html context analyze out save start");
-
     HtmlData htmlData = context.getObject(FlowKeyEnum.FLOW_CONTEXT_PROCESS_DATA.getKey());
 
-    // 网页当前下载链接信息
-    HrefData hrefData = context.getObject(FlowKeyEnum.FLOW_DOWNLOAD_ADDRESS.getKey());
+    if (null != htmlData && StringUtils.isNotEmpty(htmlData.getContext())) {
+      logger.info("collect html context analyze out save start");
 
-    String relativePathOut = BASE_PATH + SymbolMsg.PATH + hrefData.getRelativePathOut();
+      // 网页当前下载链接信息
+      HrefData hrefData = context.getObject(FlowKeyEnum.FLOW_DOWNLOAD_ADDRESS.getKey());
 
-    // 1,检查输出文件夹
-    FileUtils.dirCheckAndMkdirs(relativePathOut);
+      String relativePathOut = BASE_PATH + SymbolMsg.PATH + hrefData.getRelativePathOut();
 
-    String outFileName = hrefData.getFileName() + PROC_SUFFIX_NAME;
+      // 1,检查输出文件夹
+      FileUtils.dirCheckAndMkdirs(relativePathOut);
 
-    // 进行文件输出操作
-    boolean writeRsp =
-        FileUtils.writeFile(relativePathOut, outFileName, htmlData.getContext().getBytes());
+      String outFileName = hrefData.getFileName() + PROC_SUFFIX_NAME;
 
-    logger.info("collect html context analyze out save finish ");
+      // 进行文件输出操作
+      boolean writeRsp =
+          FileUtils.writeFile(relativePathOut, outFileName, htmlData.getContext().getBytes());
+
+      logger.info("collect html context analyze out save finish ");
+    }
 
     return true;
   }
