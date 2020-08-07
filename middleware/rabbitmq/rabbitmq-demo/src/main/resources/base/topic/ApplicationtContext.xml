@@ -1,0 +1,38 @@
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xsi:schemaLocation="http://www.springframework.org/schema/rabbit
+       http://www.springframework.org/schema/rabbit/spring-rabbit-1.7.xsd
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+
+
+    <!--定义rabbitmq的连接-->
+    <rabbit:connection-factory id="connectionFactory" host="localhost" port="5672" username="liujun" password="liujun"
+                               virtual-host="/virtualhost_lj"/>
+
+    <!--定义rabbitmq操作的模板,需要定义交换机-->
+    <rabbit:template connection-factory="connectionFactory" id="rabbitTemplate" exchange="publishExchane"/>
+
+    <!--mq的管理，包括队列和交换机等-->
+    <rabbit:admin connection-factory="connectionFactory"/>
+
+    <!--声明队列,自动声明-->
+    <rabbit:queue name="myExchangeQueue" auto-declare="true"></rabbit:queue>
+
+
+    <!--定义交换机,topic模式交换机,自动声明-->
+    <rabbit:topic-exchange name="topicExchang" auto-declare="true">
+        <rabbit:bindings>
+            <rabbit:binding pattern="key.#" queue="myExchangeQueue"></rabbit:binding>
+        </rabbit:bindings>
+    </rabbit:topic-exchange>
+
+
+    <!--定义消息接收对象-->
+    <rabbit:listener-container connection-factory="connectionFactory">
+        <rabbit:listener ref="topicListenerBean" method="recvert" queue-names="myExchangeQueue"/>
+    </rabbit:listener-container>
+
+    <bean id="topicListenerBean" class="com.liujun.middleware.rabbitmq.spring.base.topic.TopicListener"/>
+
+</beans>
