@@ -24,7 +24,7 @@
         <dependency>
             <groupId>com.rabbitmq</groupId>
             <artifactId>amqp-client</artifactId>
-            <version>4.5.0</version>
+            <version>4.8.0</version>
         </dependency>
         <!-- log配置：Log4j2 + Slf4j -->
         <dependency>
